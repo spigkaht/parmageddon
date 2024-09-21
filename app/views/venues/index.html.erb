@@ -1,5 +1,39 @@
-<% @venues.each do |venue| %>
-  <p><%= venue.name %></p>
-  <p><%= venue.street %></p>
-  <p><%= venue.city %></p>
-<% end %>
+<div class="flex flex-col justify-between items-center my-2" data-controller="toggle-venue-search">
+  <div class="flex justify-between mb-4">
+    <%= button_tag "Search for a venue", type: "button", class: "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow", data: { action: "click->toggle-venue-search#toggleVenueSearch" } %>
+    <%= button_tag "Search by location", type: "button", class: "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow", data: { action: "click->toggle-venue-search#toggleLocationSearch" } %>
+    <%= link_to "Show all venues", venues_path, class: "bg-white hover:bg-gray-100 text-gray-800 font-semibold text-center py-2 px-4 border border-gray-400 rounded shadow" %>
+  </div>
+  <%= form_with url: venues_path, method: :get do |form| %>
+    <div class="hidden justify-center items-center my-2" data-toggle-venue-search-target="venueInput">
+      <%= form.text_field :venue, placeholder: "Enter venue name", class: "block w-60 px-2 py-1 text-sm text-center bg-gray-50 border-gray-300 focus:outline-none focus:ring-gray-600 focus:border-gray-800 rounded-md" %>
+      <%= form.submit "GO", class: "text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
+    </div>
+  <% end %>
+  <%= form_with url: venues_path, method: :get do |form| %>
+    <div class="hidden justify-center items-center my-2" data-toggle-venue-search-target="locationInput">
+      <%= form.text_field :location, placeholder: "Enter location (suburb etc)", class: "block w-60 px-2 py-1 text-sm text-center bg-gray-50 border-gray-300 focus:outline-none focus:ring-gray-600 focus:border-gray-800 rounded-md" %>
+      <%= form.submit "GO", class: "text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
+    </div>
+  <% end %>
+</div>
+<div class="my-4">
+  <table class="w-full">
+    <thead>
+      <tr>
+        <th class="text-xs text-left">Venue</th>
+        <th class="text-xs text-left">Location</th>
+        <th class="text-xs text-left">Rating</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @venues.each do |venue| %>
+        <tr class="">
+          <td class="text-xs"><%= venue.name %></td>
+          <td class="text-xs"><%= venue.city %></td>
+          <td class="text-xs"><%= venue.total_rating_average %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
