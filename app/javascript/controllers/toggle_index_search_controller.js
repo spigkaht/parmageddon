@@ -8,14 +8,7 @@ export default class extends Controller {
     "locationButton"
   ];
 
-  connect() {
-    console.log("connected!");
-    console.log(this.venueInputTarget); // Check if it's defined
-    console.log(this.locationInputTarget); // Check if it's defined
-  }
-
   toggleVenueSearch() {
-    console.log("toggling!"); // for verification
     this.venueInputTarget.classList.toggle("hidden");
     this.venueInputTarget.classList.toggle("flex");
     this.locationInputTarget.classList.add("hidden");
@@ -27,7 +20,6 @@ export default class extends Controller {
   }
 
   toggleLocationSearch() {
-    console.log("toggling!"); // for verification
     this.locationInputTarget.classList.toggle("hidden");
     this.locationInputTarget.classList.toggle("flex");
     this.venueInputTarget.classList.add("hidden");
