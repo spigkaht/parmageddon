@@ -42,15 +42,12 @@ puts "creating venues..."
     locations_results.each do |location|
       venue = Venue.new(
         name: location["name"],
-        street: location["vicinity"].split(",")[0],
-        city: location["vicinity"].split(",")[1],
-        state: "VIC",
-        postcode: postcodes[i],
+        address: location["vicinity"],
         total_rating_average: 0.0,
         price_average: 0.0
       )
-      p venue
       venue.save
+      p venue
     end
 
     puts "location ##{i} done"

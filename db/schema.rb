@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_15_095310) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_22_083436) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -31,10 +31,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_15_095310) do
 
   create_table "venues", force: :cascade do |t|
     t.string "name"
-    t.string "street"
-    t.string "city"
-    t.string "state"
-    t.string "postcode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "latitude", precision: 10, scale: 6
@@ -46,6 +42,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_15_095310) do
     t.decimal "sides_rating_average", precision: 2, scale: 1
     t.decimal "venue_rating_average", precision: 2, scale: 1
     t.decimal "price_average", precision: 4, scale: 2
+    t.string "address"
   end
 
   add_foreign_key "reviews", "venues"

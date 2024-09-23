@@ -46,6 +46,7 @@ gem "bootsnap", require: false
 
 gem "autoprefixer-rails"
 gem "simple_form", github: "heartcombo/simple_form"
+gem "geocoder"
 
 group :development, :test do
   gem "dotenv-rails"
