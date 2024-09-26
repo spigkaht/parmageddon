@@ -2,6 +2,9 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["mapDiv"];
+  static values = {
+    markers: Array
+  };
 
   connect() {
     this.initMap().then(() => {
@@ -16,16 +19,11 @@ export default class extends Controller {
     const success = async (pos) => {
       const crd = pos.coords;
 
-      console.log("Your current position is:");
-      console.log(`Latitude : ${crd.latitude}`);
-      console.log(`Longitude: ${crd.longitude}`);
-      console.log(`More or less ${crd.accuracy} meters.`);
-
-      // Wait for map libraries to load
       const { Map } = await google.maps.importLibrary("maps");
       const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
-      // Initialize map with user's current position as center
+      const bounds = new google.maps.LatLngBounds();
+
       const mapOptions = {
         center: { lat: crd.latitude, lng: crd.longitude },
         zoom: 11,
@@ -34,23 +32,27 @@ export default class extends Controller {
       };
 
       this.map = new Map(this.mapDivTarget, mapOptions);
+
+      for (const marker_coords of this.markersValue) {
+        const marker = new AdvancedMarkerElement({
+          map: this.map,
+          position: {
+            lat: parseFloat(marker_coords.lat),
+            lng: parseFloat(marker_coords.lng)
+          },
+        })
+        bounds.extend(marker.position);
+      }
+
+      this.map.fitBounds(bounds);
     };
 
     const error = (err) => {
       console.warn(`ERROR(${err.code}): ${err.message}`);
-
-      // Fallback in case of error (optional: set default location)
       this.initDefaultMap();
     };
 
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    };
-
-    // Get current position, then initialize the map
-    navigator.geolocation.getCurrentPosition(success, error, options);
+    navigator.geolocation.getCurrentPosition(success, error);
   }
 
   async initDefaultMap() {
