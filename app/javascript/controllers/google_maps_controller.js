@@ -56,7 +56,6 @@ export default class extends Controller {
     this.bounds = new google.maps.LatLngBounds();
 
     const mapOptions = {
-      center: { lat: lat, lng: lng },
       zoom: 11,
       disableDefaultUI: true,
       mapId: "8920b6736ae8305a",
@@ -65,6 +64,8 @@ export default class extends Controller {
     console.log("Initializing map with correct coordinates:", lat, lng);
 
     this.map = new Map(this.mapDivTarget, mapOptions);
+    this.map.setCenter({ lat: lat, lng: lng })
+    console.log("Map center set to:", lat, lng);
   }
 
   getVenues(latitude, longitude) {
