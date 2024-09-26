@@ -18,12 +18,25 @@ export default class extends Controller {
   }
 
   async success(position) {
+    if (position && position.coords) {
     const latitude = parseFloat(position.coords.latitude);
     const longitude = parseFloat(position.coords.longitude);
 
-    await this.initMap(latitude, longitude);
+    console.log("User latitude:", latitude);
+    console.log("User longitude:", longitude);
 
+    if (isNaN(latitude) || isNaN(longitude)) {
+      console.error("Invalid latitude or longitude");
+      return this.initDefaultMap();
+    }
+
+    await this.initMap(latitude, longitude);
     this.getVenues(latitude, longitude);
+
+    } else {
+      console.error("Geolocation failed");
+      this.initDefaultMap();
+    }
   }
 
   error() {
@@ -32,15 +45,24 @@ export default class extends Controller {
   }
 
   async initMap(lat, lng) {
+    console.log("Checking mapDivTarget:", this.mapDivTarget);
+
+    if (!this.mapDivTarget || this.mapDivTarget.offsetHeight === 0) {
+      console.error("Map div is not ready or has no height.");
+      return;
+    }
+
     const { Map } = await google.maps.importLibrary("maps");
     this.bounds = new google.maps.LatLngBounds();
 
     const mapOptions = {
       center: { lat: lat, lng: lng },
-      zoom: 4,
+      zoom: 11,
       disableDefaultUI: true,
       mapId: "8920b6736ae8305a",
     };
+
+    console.log("Initializing map with correct coordinates:", lat, lng);
 
     this.map = new Map(this.mapDivTarget, mapOptions);
   }
