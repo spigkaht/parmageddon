@@ -16,6 +16,8 @@ class LocationsController < ApplicationController
       }
     end
 
+    puts markers
+
     render json: { venues: markers }
   end
 end
