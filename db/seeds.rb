@@ -17,9 +17,8 @@ puts "clean!"
 
 endpoint = "https://maps.googleapis.com/maps/api"
 api_key = ENV.fetch("GMAPS_API_KEY")
-radius = "5000"
+radius = "500000"
 type = "bar"
-postcodes = [3810, 3156, 3199, 3931, 3806]
 
 puts "creating venues..."
 5.times do |i|

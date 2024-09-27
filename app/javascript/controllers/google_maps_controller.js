@@ -5,15 +5,29 @@ export default class extends Controller {
   bounds = null;
 
   connect() {
-    this.getUserLocation();
+    this.checkForCoordinatesInParams();
+  }
+
+  // Check for coordinates in the URL
+  checkForCoordinatesInParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const latitude = parseFloat(urlParams.get("latitude"));
+    const longitude = parseFloat(urlParams.get("longitude"));
+
+    if (!isNaN(latitude) && !isNaN(longitude)) {
+      this.initMap(latitude, longitude);
+      this.getVenues(latitude, longitude);
+    } else {
+      this.getUserLocation();
+    }
   }
 
   getUserLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.success.bind(this), this.error.bind(this), {
-        enableHighAccuracy: true,  // Request higher accuracy
-        timeout: 5000,  // Wait up to 5 seconds for a response
-        maximumAge: 0  // Don't use cached positions
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
       });
     } else {
       alert("Unable to retrieve your location");
@@ -22,35 +36,11 @@ export default class extends Controller {
   }
 
   async success(position) {
-    console.log("Full position object:", position);  // Log everything
-    let latitude = 0;
-    let longitude = 0;
+    const latitude = position.coords.latitude || -37.8136;
+    const longitude = position.coords.longitude || 144.9631;
 
-    if (position && position.coords) {
-      if (position.coords.accuracy < 1000) {
-        latitude = parseFloat(position.coords.latitude);
-        longitude = parseFloat(position.coords.longitude);
-      } else {
-        latitude = -37.8136;
-        longitude = 144.9631;
-      }
-
-      if (isNaN(latitude) || isNaN(longitude)) {
-        console.error("Invalid latitude or longitude");
-        return this.initDefaultMap();
-      }
-
-      console.log("lat: ", latitude, "lng: ", longitude);
-      // Initialize the map and set the center in the initMap function
-      await this.initMap(latitude, longitude);
-
-      // Fetch and plot venues
-      this.getVenues(latitude, longitude);
-
-    } else {
-      console.error("Geolocation failed");
-      this.initDefaultMap();
-    }
+    await this.initMap(latitude, longitude);
+    this.getVenues(latitude, longitude);
   }
 
   error() {
@@ -67,11 +57,8 @@ export default class extends Controller {
     const { Map } = await google.maps.importLibrary("maps");
     this.bounds = new google.maps.LatLngBounds();
 
-    // Log the lat and lng to make sure they are correct
-    console.log("Initializing map with center lat:", lat, "lng:", lng);
-
     const mapOptions = {
-      center: { lat: lat, lng: lng },  // Set the center during initialization
+      center: { lat: lat, lng: lng },
       zoom: 11,
       disableDefaultUI: true,
       mapId: "8920b6736ae8305a",
@@ -79,6 +66,7 @@ export default class extends Controller {
 
     this.map = new Map(this.mapDivTarget, mapOptions);
   }
+
   getVenues(latitude, longitude) {
     fetch('/locations', {
       method: 'POST',
@@ -105,11 +93,11 @@ export default class extends Controller {
       markerImg.style.width = "40px";
       markerImg.style.height = "40px";
       const contentString =
-      `<div class="infoWindow">
-      <p>${venue.name}</p>
-      <i class="fa-regular fa-star"></i>
-      <p>${venue.rating_average}</p>
-      </div>`;
+        `<div class="infoWindow">
+          <p>${venue.name}</p>
+          <i class="fa-regular fa-star"></i>
+          <p>${venue.rating_average}</p>
+        </div>`;
 
       const infowindow = new google.maps.InfoWindow({
         content: contentString,
@@ -123,26 +111,20 @@ export default class extends Controller {
         gmpClickable: true
       });
 
-      // Extend the bounds to include the marker's position
       this.bounds.extend(marker.position);
     });
 
-    // Only call fitBounds if there are valid markers
     if (venues.length > 0) {
-      console.log("Fitting bounds with calculated markers");
       this.map.fitBounds(this.bounds);
     }
   }
 
-  initDefaultMap() {
-    const mapOptions = {
-      center: { lat: -37.8136, lng: 144.9631 },
-      zoom: 11,
-      disableDefaultUI: true,
-      mapId: "8920b6736ae8305a",
-    };
+  centerMap() {
+    const center = this.map.getCenter();
+    const lat = center.lat();
+    const lng = center.lng();
 
-    console.log("Initializing FALLBACK map with center lat:", lat, "lng:", lng);
-    this.map = new google.maps.Map(this.mapDivTarget, mapOptions);
+    // Redirect the page with lat and lng as URL parameters
+    window.location.href = `?latitude=${lat}&longitude=${lng}`;
   }
 }
