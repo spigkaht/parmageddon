@@ -29,8 +29,16 @@ export default class extends Controller {
 
     await this.initMap(latitude, longitude);
     this.map.setCenter({ lat: latitude, lng: longitude });
-    
+
     this.getVenues(latitude, longitude);
+
+    window.setTimeout(() => {
+      console.log("Triggering debugger after 3 seconds...");
+      debugger;  // This will trigger the debugger 3 seconds after the page has fully loaded
+
+      // Check the map state
+      console.log("Map Center:", this.map.getCenter().toString());
+    }, 3000);  // 3000ms = 3 seconds
 
     } else {
       console.error("Geolocation failed");
@@ -44,25 +52,22 @@ export default class extends Controller {
   }
 
   async initMap(lat, lng) {
-    try {
-      if (!this.mapDivTarget || this.mapDivTarget.offsetHeight === 0) {
-        console.error("Map div is not ready or has no height.");
-        return;
-      }
 
-      const { Map } = await google.maps.importLibrary("maps");
-      this.bounds = new google.maps.LatLngBounds();
-
-      const mapOptions = {
-        zoom: 11,
-        disableDefaultUI: true,
-        mapId: "8920b6736ae8305a",
-      };
-
-      this.map = new Map(this.mapDivTarget, mapOptions);
-    } catch (error) {
-      console.error("Error initializing Google Maps:", error);
+    if (!this.mapDivTarget || this.mapDivTarget.offsetHeight === 0) {
+      console.error("Map div is not ready or has no height.");
+      return;
     }
+
+    const { Map } = await google.maps.importLibrary("maps");
+    this.bounds = new google.maps.LatLngBounds();
+
+    const mapOptions = {
+      zoom: 11,
+      disableDefaultUI: true,
+      mapId: "8920b6736ae8305a",
+    };
+
+    this.map = new Map(this.mapDivTarget, mapOptions);
   }
 
   getVenues(latitude, longitude) {
