@@ -22,15 +22,14 @@ export default class extends Controller {
     const latitude = parseFloat(position.coords.latitude);
     const longitude = parseFloat(position.coords.longitude);
 
-    console.log("User latitude:", latitude);
-    console.log("User longitude:", longitude);
-
     if (isNaN(latitude) || isNaN(longitude)) {
       console.error("Invalid latitude or longitude");
       return this.initDefaultMap();
     }
 
     await this.initMap(latitude, longitude);
+    this.map.setCenter({ lat: latitude, lng: longitude });
+    
     this.getVenues(latitude, longitude);
 
     } else {
@@ -45,27 +44,25 @@ export default class extends Controller {
   }
 
   async initMap(lat, lng) {
-    console.log("Checking mapDivTarget:", this.mapDivTarget);
+    try {
+      if (!this.mapDivTarget || this.mapDivTarget.offsetHeight === 0) {
+        console.error("Map div is not ready or has no height.");
+        return;
+      }
 
-    if (!this.mapDivTarget || this.mapDivTarget.offsetHeight === 0) {
-      console.error("Map div is not ready or has no height.");
-      return;
+      const { Map } = await google.maps.importLibrary("maps");
+      this.bounds = new google.maps.LatLngBounds();
+
+      const mapOptions = {
+        zoom: 11,
+        disableDefaultUI: true,
+        mapId: "8920b6736ae8305a",
+      };
+
+      this.map = new Map(this.mapDivTarget, mapOptions);
+    } catch (error) {
+      console.error("Error initializing Google Maps:", error);
     }
-
-    const { Map } = await google.maps.importLibrary("maps");
-    this.bounds = new google.maps.LatLngBounds();
-
-    const mapOptions = {
-      zoom: 11,
-      disableDefaultUI: true,
-      mapId: "8920b6736ae8305a",
-    };
-
-    console.log("Initializing map with correct coordinates:", lat, lng);
-
-    this.map = new Map(this.mapDivTarget, mapOptions);
-    this.map.setCenter({ lat: lat, lng: lng })
-    console.log("Map center set to:", lat, lng);
   }
 
   getVenues(latitude, longitude) {
@@ -79,7 +76,6 @@ export default class extends Controller {
     })
       .then(response => response.json())
       .then(data => {
-        console.log("Venues data received:", data);
         this.plotMarkers(data.venues);
       })
       .catch(error => console.error('Error fetching venues:', error));
