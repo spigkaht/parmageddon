@@ -1,22 +1,20 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["mapDiv"];
+  static targets = ["mapDiv", "loaderDiv"];
   bounds = null;
 
   connect() {
     this.checkForCoordinatesInParams();
   }
 
-  // Check for coordinates in the URL
   checkForCoordinatesInParams() {
     const urlParams = new URLSearchParams(window.location.search);
     const latitude = parseFloat(urlParams.get("latitude"));
     const longitude = parseFloat(urlParams.get("longitude"));
 
     if (!isNaN(latitude) && !isNaN(longitude)) {
-      this.initMap(latitude, longitude);
-      this.getVenues(latitude, longitude);
+      this.runAfterAsync(this.initMap(latitude, longitude), this.getVenues(latitude, longitude));
     } else {
       this.getUserLocation();
     }
@@ -39,8 +37,7 @@ export default class extends Controller {
     const latitude = position.coords.latitude || -37.8136;
     const longitude = position.coords.longitude || 144.9631;
 
-    await this.initMap(latitude, longitude);
-    this.getVenues(latitude, longitude);
+    this.runAfterAsync(this.initMap(latitude, longitude), this.getVenues(latitude, longitude));
   }
 
   error() {
@@ -60,7 +57,6 @@ export default class extends Controller {
     const mapOptions = {
       center: { lat: lat, lng: lng },
       zoom: 11,
-      disableDefaultUI: true,
       mapId: "8920b6736ae8305a",
     };
 
@@ -68,7 +64,7 @@ export default class extends Controller {
   }
 
   getVenues(latitude, longitude) {
-    fetch('/locations', {
+    return fetch('/locations', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -78,7 +74,7 @@ export default class extends Controller {
     })
       .then(response => response.json())
       .then(data => {
-        this.plotMarkers(data.venues);
+        return this.plotMarkers(data.venues);
       })
       .catch(error => console.error('Error fetching venues:', error));
   }
@@ -92,23 +88,22 @@ export default class extends Controller {
       const content = document.createElement("div");
       content.classList.add("flex", "flex-col", "justify-between", "items-center", "relative")
       content.innerHTML = `
-      <div class="hidden flex-col bg-white" id="infoDiv">
-        <p>${venue.name}</p>
-        <div class="flex">
-          <span class="material-symbols-outlined" title=${venue.name}>
-          star
-          </span>
-          <p>${venue.total_rating_average}</p>
+      <div class="hidden flex-col bg-orange-500 text-slate-900 opacity-90 rounded-md border border-gray-900 py-0.5 px-1.5" id="infoDiv">
+        <p class="font-bold text-base">${venue.name}</p>
+        <div class="flex justify-between items-center">
+          <div class="flex">
+            <span class="material-symbols-outlined !font-bold !text-xl mr-1" title=${venue.name}>
+            star
+            </span>
+            <p class="text-lg">${venue.rating}</p>
+          </div>
+          <a href="/venues/${venue.id}" class="ml-2 text-lg text-blue-600">view</a>
         </div>
       </div>
       <div>
-        <img src="https://res.cloudinary.com/dp0apr6y4/image/upload/v1718612885/chicken-marker_rivnug.svg" style="width:40px;height:40px;">
+        <img src="https://res.cloudinary.com/dp0apr6y4/image/upload/v1718612885/chicken-marker_rivnug.svg" style="width:40px;height:40px;margin-top:-5px;">
       </div>
       `;
-
-      // const infowindow = new google.maps.InfoWindow({
-      //   content: contentString,
-      // });
 
       const marker = new AdvancedMarkerElement({
         map: this.map,
@@ -120,26 +115,16 @@ export default class extends Controller {
 
       marker.addListener("click", () => {
         const infoDiv = marker.content.querySelector("#infoDiv");
-        console.log(infoDiv);
         if (infoDiv.classList.contains("hidden")) {
           infoDiv.classList.remove("hidden");
+          infoDiv.classList.add("flex");
           marker.zIndex = null;
-          console.log("hiding marker");
-          console.log(infoDiv);
         } else {
           infoDiv.classList.add("hidden");
+          infoDiv.classList.remove("flex");
           marker.zIndex = 1;
-          console.log(infoDiv);
-          console.log("showing marker");
         }
       });
-
-      // marker.addListener("click", () => {
-      //   infowindow.open({
-      //     anchor: marker,
-      //     map: this.map,
-      //   });
-      // });
 
       this.bounds.extend(marker.position);
     });
@@ -149,12 +134,24 @@ export default class extends Controller {
     }
   }
 
+  runAfterAsync(...asyncFunctions) {
+    Promise.all(asyncFunctions).then(() => {
+      console.log("All asynchronous actions completed!");
+      this.afterAllAsyncActions();
+    });
+  }
+
+  afterAllAsyncActions() {
+    console.log("Post-async operations completed.");
+    this.mapDivTarget.classList.remove("opacity-50");
+    this.loaderDivTarget.classList.add("hidden");
+  }
+
   centerMap() {
     const center = this.map.getCenter();
     const lat = center.lat();
     const lng = center.lng();
 
-    // Redirect the page with lat and lng as URL parameters
     window.location.href = `?latitude=${lat}&longitude=${lng}`;
   }
 }

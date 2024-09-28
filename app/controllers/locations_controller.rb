@@ -1,3 +1,5 @@
+require "json"
+
 class LocationsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:find_nearby]
 
@@ -29,9 +31,11 @@ class LocationsController < ApplicationController
 
     markers = @venues.map do |venue|
       {
+        id: venue.id,
         lat: venue.latitude,
         lng: venue.longitude,
-        name: venue.name
+        name: venue.name,
+        rating: venue.total_rating_average
       }
     end
 
