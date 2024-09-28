@@ -1,8 +1,8 @@
 <div class="flex flex-col justify-between items-center my-2" data-controller="toggle-venue-search">
   <div class="flex justify-between mb-4">
-    <%= button_tag "Search for a venue", type: "button", class: "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow", data: { action: "click->toggle-venue-search#toggleVenueSearch" } %>
-    <%= button_tag "Search by location", type: "button", class: "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow", data: { action: "click->toggle-venue-search#toggleLocationSearch" } %>
-    <%= link_to "Show all venues", venues_path, class: "bg-white hover:bg-gray-100 text-gray-800 font-semibold text-center py-2 px-4 border border-gray-400 rounded shadow" %>
+    <%= button_tag "Search for a venue", type: "button", class: "bg-transparent hover:bg-slate-500 text-slate-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-slate-500 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleVenueSearch" } %>
+    <%= button_tag "Search by location", type: "button", class: "bg-transparent hover:bg-slate-500 text-slate-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-slate-500 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleLocationSearch" } %>
+    <%= link_to "Show all venues", venues_path, class: "bg-transparent hover:bg-slate-500 text-slate-700 text-xs sm:text-sm text-center font-semibold hover:text-white py-1 px-2 mx-1 border border-slate-500 hover:border-transparent rounded" %>
   </div>
   <%= form_with url: venues_path, method: :get do |form| %>
     <div class="hidden justify-center items-center my-2" data-toggle-venue-search-target="venueInput">
