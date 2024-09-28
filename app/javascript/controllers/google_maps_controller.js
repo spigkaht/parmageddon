@@ -85,31 +85,61 @@ export default class extends Controller {
 
   async plotMarkers(venues) {
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    this.currentInfoWindow = null;
 
     venues.forEach(venue => {
       const position = new google.maps.LatLng(parseFloat(venue.lat), parseFloat(venue.lng));
-      const markerImg = document.createElement("img");
-      markerImg.src = "https://res.cloudinary.com/dp0apr6y4/image/upload/v1718612885/chicken-marker_rivnug.svg";
-      markerImg.style.width = "40px";
-      markerImg.style.height = "40px";
-      const contentString =
-        `<div class="infoWindow">
-          <p>${venue.name}</p>
-          <i class="fa-regular fa-star"></i>
-          <p>${venue.rating_average}</p>
-        </div>`;
+      const content = document.createElement("div");
+      content.classList.add("flex", "flex-col", "justify-between", "items-center", "relative")
+      content.innerHTML = `
+      <div class="hidden flex-col bg-white" id="infoDiv">
+        <p>${venue.name}</p>
+        <div class="flex">
+          <span class="material-symbols-outlined" title=${venue.name}>
+          star
+          </span>
+          <p>${venue.total_rating_average}</p>
+        </div>
+      </div>
+      <div>
+        <img src="https://res.cloudinary.com/dp0apr6y4/image/upload/v1718612885/chicken-marker_rivnug.svg" style="width:40px;height:40px;">
+      </div>
+      `;
 
-      const infowindow = new google.maps.InfoWindow({
-        content: contentString,
-      });
+      // const infowindow = new google.maps.InfoWindow({
+      //   content: contentString,
+      // });
 
       const marker = new AdvancedMarkerElement({
         map: this.map,
         position: position,
-        content: markerImg,
+        content: content,
         title: venue.name,
         gmpClickable: true
       });
+
+      marker.addListener("click", () => {
+        const infoDiv = marker.content.querySelector("#infoDiv");
+        console.log(infoDiv);
+        if (infoDiv.classList.contains("hidden")) {
+          infoDiv.classList.remove("hidden");
+          marker.zIndex = null;
+          console.log("hiding marker");
+          console.log(infoDiv);
+        } else {
+          infoDiv.classList.add("hidden");
+          marker.zIndex = 1;
+          console.log(infoDiv);
+          console.log("showing marker");
+        }
+      });
+
+      // marker.addListener("click", () => {
+      //   infowindow.open({
+      //     anchor: marker,
+      //     map: this.map,
+      //   });
+      // });
 
       this.bounds.extend(marker.position);
     });
