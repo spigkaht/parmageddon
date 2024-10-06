@@ -1,25 +1,49 @@
-<div class="flex flex-col justify-between items-center" data-controller="toggle-venue-search">
-  <div class="flex justify-between my-4">
-    <%= button_tag "Search for a venue", type: "button", class: "bg-transparent hover:bg-akaroa-500 text-akaroa-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleVenueSearch" } %>
-    <%= button_tag "Search by location", type: "button", class: "bg-transparent hover:bg-akaroa-500 text-akaroa-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleLocationSearch" } %>
-    <%= link_to "Show all venues", venues_path, class: "bg-transparent hover:bg-akaroa-500 text-akaroa-700 text-xs sm:text-sm text-center font-semibold hover:text-white py-1 px-2 mx-1 border border-akaroa-500 hover:border-transparent rounded" %>
+<div class="flex flex-col w-full bg-carnation-50" data-controller="toggle-venue-search">
+  <div class="flex flex-col bg-saffron-mango-800 text-saffron-mango-200 text-lg">
+    <div class="flex justify-between">
+      <%= link_to root_path do %>
+        <div class="flex items-center p-3">
+        <%= image_tag "house.png", class: "px-2" %>
+        <p>Home</p>
+        </div>
+      <% end %>
+      <div class="flex p-3">
+        <%= link_to venues_path do %>
+          <div class="flex items-center px-1">
+            <%= image_tag "rate.png", class: "px-2" %>
+            <p>Rate</p>
+          </div>
+        <% end %>
+        <%= link_to venues_path do %>
+          <div class="flex items-center px-1">
+            <%= image_tag "chicken.png", class: "px-2" %>
+            <p>Venues</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-around w-full px-4 my-4">
+    <%= button_tag "Search for a venue", type: "button", class: "bg-transparent hover:bg-carnation-500 text-carnation-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-carnation-500 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleVenueSearch" } %>
+    <%= button_tag "Search by location", type: "button", class: "bg-transparent hover:bg-carnation-500 text-carnation-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-carnation-500 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleLocationSearch" } %>
+    <%= link_to "Show all venues", venues_path, class: "bg-transparent hover:bg-carnation-500 text-carnation-700 text-xs sm:text-sm text-center font-semibold hover:text-white py-1 px-2 mx-1 border border-carnation-500 hover:border-transparent rounded" %>
   </div>
   <%= form_with url: venues_path, method: :get do |form| %>
     <div class="hidden justify-center items-center mb-4" data-toggle-venue-search-target="venueInput">
-      <%= form.text_field :venue, placeholder: "Enter venue name", class: "block w-60 px-2 py-1 text-sm text-center bg-akaroa-50 border-akaroa-300 focus:outline-none focus:ring-akaroa-600 focus:border-akaroa-800 rounded-md" %>
-      <%= form.submit "GO", class: "text-white bg-akaroa-600 hover:bg-akaroa-800 focus:ring-4 focus:ring-akaroa-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
+      <%= form.text_field :venue, placeholder: "Enter venue name", class: "block w-60 px-2 py-1 text-sm text-center bg-carnation-50 border-carnation-300 focus:outline-none focus:ring-carnation-600 focus:border-carnation-800 rounded-md" %>
+      <%= form.submit "GO", class: "text-white bg-carnation-600 hover:bg-carnation-800 focus:ring-4 focus:ring-carnation-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
     </div>
   <% end %>
   <%= form_with url: venues_path, method: :get do |form| %>
     <div class="hidden justify-center items-center mb-4" data-toggle-venue-search-target="locationInput">
-      <%= form.text_field :location, placeholder: "Enter location (suburb etc)", class: "block w-60 px-2 py-1 text-sm text-center bg-akaroa-50 border-akaroa-300 focus:outline-none focus:ring-akaroa-600 focus:border-akaroa-800 rounded-md" %>
-      <%= form.submit "GO", class: "text-white bg-akaroa-600 hover:bg-akaroa-800 focus:ring-4 focus:ring-akaroa-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
+      <%= form.text_field :location, placeholder: "Enter location (suburb etc)", class: "block w-60 px-2 py-1 text-sm text-center bg-carnation-50 border-carnation-300 focus:outline-none focus:ring-carnation-600 focus:border-carnation-800 rounded-md" %>
+      <%= form.submit "GO", class: "text-white bg-carnation-600 hover:bg-carnation-800 focus:ring-4 focus:ring-carnation-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
     </div>
   <% end %>
 </div>
 <div class="relative shadow-md overflow-x-auto rounded-sm">
-  <table class="w-full text-sm text-left text-akaroa-500 dark:text-akaroa-400">
-    <thead class="text-xs text-akaroa-700 uppercase bg-akaroa-50 dark:bg-akaroa-700 dark:text-akaroa-400">
+  <table class="w-full text-sm text-left text-carnation-500">
+    <thead class="text-xs text-carnation-700 uppercase bg-carnation-50">
       <tr>
         <th scope="col" class="text-xs text-left px-3 py-1.5">Venue</th>
         <th scope="col" class="text-xs text-left px-3 py-1.5">Location</th>
@@ -28,10 +52,10 @@
     </thead>
     <tbody>
       <% @venues.each do |venue| %>
-        <tr class="odd:bg-white odd:dark:bg-akaroa-900 even:bg-akaroa-50 even:dark:bg-akaroa-800 border-b dark:border-akaroa-700">
-          <td scope="row" class="px-3 py-2 font-medium text-akaroa-900 text-xs dark:text-white"><%= link_to "#{venue.name}", venue_path(venue) %></td>
-          <td scope="row" class="px-3 py-2 font-medium text-akaroa-900 text-xs dark:text-white"><%= venue.address %></td>
-          <td scope="row" class="px-3 py-2 font-medium text-akaroa-900 text-xs dark:text-white text-right"><%= venue.total_rating_average %></td>
+        <tr class="odd:bg-white even:bg-carnation-50 border-b">
+          <td scope="row" class="px-3 py-2 font-medium text-carnation-900 text-xs"><%= link_to "#{venue.name}", venue_path(venue) %></td>
+          <td scope="row" class="px-3 py-2 font-medium text-carnation-900 text-xs"><%= venue.address %></td>
+          <td scope="row" class="px-3 py-2 font-medium text-carnation-900 text-xs text-right"><%= venue.total_rating_average %></td>
         </tr>
       <% end %>
     </tbody>

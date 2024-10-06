@@ -99,7 +99,7 @@ export default class extends Controller {
       const content = document.createElement("div");
       content.classList.add("flex", "flex-col", "justify-between", "items-center", "relative", "z-50")
       content.innerHTML = `
-      <div class="hidden flex-col bg-orange-500 text-slate-900 opacity-90 rounded-md border border-gray-900 py-0.5 px-1.5" id="infoDiv">
+      <div class="hidden flex-col bg-saffron-mango-500 text-saffron-mango-950 opacity-90 rounded-md border border-saffron-mango-950 py-0.5 px-1.5" id="infoDiv">
         <p class="font-bold text-base">${venue.name}</p>
         <div class="flex justify-between items-center">
           <div class="flex">
@@ -108,7 +108,7 @@ export default class extends Controller {
             </span>
             <p class="text-lg">${venue.rating}</p>
           </div>
-          <a href="/venues/${venue.id}" class="ml-2 text-lg text-blue-600" data-turbo="false">view</a>
+          <a href="/venues/${venue.id}" class="ml-2 text-base text-saffron-mango-950 underline" data-turbo="false">View</a>
         </div>
       </div>
       <div>
@@ -125,6 +125,7 @@ export default class extends Controller {
       });
 
       marker.addListener("click", () => {
+        document.querySelectorAll("#infoDiv").forEach((element) => element.classList.add("hidden"));
         const infoDiv = marker.content.querySelector("#infoDiv");
         if (infoDiv.classList.contains("hidden")) {
           infoDiv.classList.remove("hidden");
