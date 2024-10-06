@@ -3,5 +3,7 @@ Rails.application.routes.draw do
 
   root to: "pages#index"
   post "locations", to: "locations#find_nearby"
-  resources :venues, only: [:index, :show]
+  resources :venues, only: [:index, :show] do
+    resources :ratings, only: [:new, :create]
+  end
 end

@@ -4,25 +4,25 @@
     <h2 class="text-base lg:text-lg md:pt-20 mx-3">Find a Parma that's right for you.</h2>
   </div>
   <div class="w-full h-1/3 flex flex-col items-end relative" data-controller="google-maps">
-    <%= button_tag "Recentre search", class: "bg-transparent hover:bg-slate-500 text-slate-700 text-sm font-semibold hover:text-white py-1 px-2 mr-2 border border-slate-500 hover:border-transparent rounded", data: { action: "click->google-maps#centerMap" } %>
+    <%= button_tag "Recentre search", class: "bg-transparent hover:bg-akaroa-500 text-akaroa-700 text-sm font-semibold hover:text-white py-1 px-2 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->google-maps#centerMap" } %>
     <div class="loader" data-google-maps-target="loaderDiv"></div>
     <div id="map" class="flex justify-center items-center w-full h-full opacity-50 mt-2" data-google-maps-target="mapDiv"></div>
   </div>
-  <div class="flex flex-col justify-between items-center bg-white py-6 mb-10" data-controller="toggle-index-search">
+  <div class="flex flex-col justify-between items-center py-6 mb-10" data-controller="toggle-index-search">
     <h2 class="font-bold my-1">Submit a rating!</h2>
-    <%= button_tag "Search for a venue", type: "button", class: "bg-transparent hover:bg-slate-500 text-slate-700 text-sm font-semibold hover:text-white py-1 px-2 border border-slate-500 hover:border-transparent rounded", data: { action: "click->toggle-index-search#toggleVenueSearch", toggle_index_search_target: "venueButton" } %>
+    <%= button_tag "Search for a venue", type: "button", class: "bg-transparent hover:bg-akaroa-500 text-akaroa-700 text-sm font-semibold hover:text-white py-1 px-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->toggle-index-search#toggleVenueSearch", toggle_index_search_target: "venueButton" } %>
     <%= form_with url: venues_path, method: :get do |form| %>
       <div class="hidden justify-center items-center" data-toggle-index-search-target="venueInput">
-        <%= form.text_field :venue, placeholder: "Enter venue name", class: "block w-60 px-2 py-1 text-sm text-center bg-gray-50 border-gray-300 focus:outline-none focus:ring-gray-600 focus:border-gray-800 rounded-md" %>
-        <%= form.submit "GO", class: "text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
+        <%= form.text_field :venue, placeholder: "Enter venue name", class: "block w-60 px-2 py-1 text-sm text-center bg-akaroa-50 border-akaroa-300 focus:outline-none focus:ring-akaroa-600 focus:border-akaroa-800 rounded-md" %>
+        <%= form.submit "GO", class: "text-white bg-akaroa-600 hover:bg-akaroa-800 focus:ring-4 focus:ring-akaroa-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
       </div>
     <% end %>
     <h2 class="font-bold my-1">OR..</h2>
-    <%= button_tag "Browse ratings by venue", type: "button", class: "bg-transparent hover:bg-slate-500 text-slate-700 text-sm font-semibold hover:text-white py-1 px-2 border border-slate-500 hover:border-transparent rounded", data: { action: "click->toggle-index-search#toggleLocationSearch", toggle_index_search_target: "locationButton" } %>
+    <%= button_tag "Venues by location", type: "button", class: "bg-transparent hover:bg-akaroa-500 text-akaroa-700 text-sm font-semibold hover:text-white py-1 px-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->toggle-index-search#toggleLocationSearch", toggle_index_search_target: "locationButton" } %>
     <%= form_with url: venues_path, method: :get do |form| %>
       <div class="hidden justify-center items-center" data-toggle-index-search-target="locationInput">
-        <%= form.text_field :location, placeholder: "Enter location (suburb etc)", class: "block w-60 px-2 py-1 text-sm text-center bg-gray-50 border-gray-300 focus:outline-none focus:ring-gray-600 focus:border-gray-800 rounded-md" %>
-        <%= form.submit "GO", class: "text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
+        <%= form.text_field :location, placeholder: "Enter location (suburb etc)", class: "block w-60 px-2 py-1 text-sm text-center bg-akaroa-50 border-akaroa-300 focus:outline-none focus:ring-akaroa-600 focus:border-akaroa-800 rounded-md" %>
+        <%= form.submit "GO", class: "text-white bg-akaroa-600 hover:bg-akaroa-800 focus:ring-4 focus:ring-akaroa-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
       </div>
     <% end %>
   </div>

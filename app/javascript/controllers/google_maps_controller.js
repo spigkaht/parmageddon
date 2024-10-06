@@ -46,6 +46,16 @@ export default class extends Controller {
   }
 
   async initMap(lat, lng) {
+    if (typeof google === "undefined" || typeof google.maps === "undefined") {
+      console.error("Google Maps API is not loaded yet.");
+      return;
+    }
+
+    if (this.map) {
+      console.log("Map is already initialized");
+      return;
+    }
+
     if (!this.mapDivTarget || this.mapDivTarget.offsetHeight === 0) {
       console.error("Map div is not ready or has no height.");
       return;
@@ -57,6 +67,7 @@ export default class extends Controller {
     const mapOptions = {
       center: { lat: lat, lng: lng },
       zoom: 11,
+      disableDefaultUI: true,
       mapId: "8920b6736ae8305a",
     };
 
@@ -86,7 +97,7 @@ export default class extends Controller {
     venues.forEach(venue => {
       const position = new google.maps.LatLng(parseFloat(venue.lat), parseFloat(venue.lng));
       const content = document.createElement("div");
-      content.classList.add("flex", "flex-col", "justify-between", "items-center", "relative")
+      content.classList.add("flex", "flex-col", "justify-between", "items-center", "relative", "z-50")
       content.innerHTML = `
       <div class="hidden flex-col bg-orange-500 text-slate-900 opacity-90 rounded-md border border-gray-900 py-0.5 px-1.5" id="infoDiv">
         <p class="font-bold text-base">${venue.name}</p>
@@ -118,11 +129,11 @@ export default class extends Controller {
         if (infoDiv.classList.contains("hidden")) {
           infoDiv.classList.remove("hidden");
           infoDiv.classList.add("flex");
-          marker.zIndex = null;
+          marker.zIndex = google.maps.Marker.MAX_ZINDEX + 1;
         } else {
           infoDiv.classList.add("hidden");
           infoDiv.classList.remove("flex");
-          marker.zIndex = 1;
+          marker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
         }
       });
 
@@ -136,13 +147,11 @@ export default class extends Controller {
 
   runAfterAsync(...asyncFunctions) {
     Promise.all(asyncFunctions).then(() => {
-      console.log("All asynchronous actions completed!");
       this.afterAllAsyncActions();
     });
   }
 
   afterAllAsyncActions() {
-    console.log("Post-async operations completed.");
     this.mapDivTarget.classList.remove("opacity-50");
     this.loaderDivTarget.classList.add("hidden");
   }
@@ -153,5 +162,12 @@ export default class extends Controller {
     const lng = center.lng();
 
     window.location.href = `?latitude=${lat}&longitude=${lng}`;
+  }
+
+  disconnect() {
+    if (this.map) {
+      google.maps.event.clearInstanceListeners(this.map);
+      this.map = null;
+    }
   }
 }

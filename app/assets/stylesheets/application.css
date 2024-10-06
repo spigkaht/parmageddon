@@ -27,6 +27,19 @@
   animation: l4 1s steps(4) infinite;
 }
 
+.loader-venue {
+  position: absolute;
+  z-index: 50;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: fit-content;
+  font-weight: bold;
+  font-size: 22px;
+  clip-path: inset(0 3ch 0 0);
+  animation: l4 1s steps(4) infinite;
+}
+
 .loader:before {
   content: "Loading...";
 }

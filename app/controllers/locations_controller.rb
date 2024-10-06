@@ -17,11 +17,25 @@ class LocationsController < ApplicationController
     locations_results = JSON.parse(locations_response)["results"]
 
     locations_results.each do |location|
+      venue_uri = URI("#{endpoint}/place/details/json?place_id=#{location["place_id"]}&key=#{api_key}")
+      venue_response = Net::HTTP.get(venue_uri)
+      venue_results = JSON.parse(venue_response)["result"]
+
       Venue.find_or_create_by(
         name: location["name"],
         address: location["vicinity"]
       ) do |venue|
+        if venue_results
+          venue.hours = venue_results["current_opening_hours"]["weekday_text"] if venue_results["current_opening_hours"]
+          venue.phone = venue_results["formatted_phone_number"] if venue_results["formatted_phone_number"]
+          venue.website = venue_results["website"] if venue_results["website"]
+        end
         venue.total_rating_average = 0.0
+        venue.chicken_rating_average = 0.0
+        venue.crumb_rating_average = 0.0
+        venue.topping_rating_average = 0.0
+        venue.sides_rating_average = 0.0
+        venue.venue_rating_average = 0.0
         venue.price_average = 0.0
       end
     end

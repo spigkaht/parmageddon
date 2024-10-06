@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_22_083436) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_04_223332) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "reviews", force: :cascade do |t|
-    t.text "comment"
+  create_table "ratings", force: :cascade do |t|
     t.bigint "venue_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "comment"
     t.decimal "total_rating", precision: 2, scale: 1
     t.decimal "chicken_rating", precision: 2, scale: 1
     t.decimal "crumb_rating", precision: 2, scale: 1
@@ -26,7 +26,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_22_083436) do
     t.decimal "sides_rating", precision: 2, scale: 1
     t.decimal "venue_rating", precision: 2, scale: 1
     t.decimal "price", precision: 4, scale: 2
-    t.index ["venue_id"], name: "index_reviews_on_venue_id"
+    t.index ["venue_id"], name: "index_ratings_on_venue_id"
   end
 
   create_table "venues", force: :cascade do |t|
@@ -43,7 +43,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_22_083436) do
     t.decimal "venue_rating_average", precision: 2, scale: 1
     t.decimal "price_average", precision: 4, scale: 2
     t.string "address"
+    t.text "hours"
+    t.string "phone"
+    t.string "website"
   end
 
-  add_foreign_key "reviews", "venues"
+  add_foreign_key "ratings", "venues"
 end
