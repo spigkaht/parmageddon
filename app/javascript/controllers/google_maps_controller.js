@@ -103,12 +103,12 @@ export default class extends Controller {
         <p class="font-bold text-base">${venue.name}</p>
         <div class="flex justify-between items-center">
           <div class="flex">
-            <span class="material-symbols-outlined !font-bold !text-xl mr-1" title=${venue.name}>
+            <span class="material-symbols-sharp !font-bold !text-xl mr-1" title=${venue.name}>
             star
             </span>
             <p class="text-lg">${venue.rating}</p>
           </div>
-          <a href="/venues/${venue.id}" class="ml-2 text-lg text-blue-600">view</a>
+          <a href="/venues/${venue.id}" class="ml-2 text-lg text-blue-600" data-turbo="false">view</a>
         </div>
       </div>
       <div>

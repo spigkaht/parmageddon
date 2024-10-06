@@ -21,76 +21,77 @@
       </div>
     </div>
   </div>
-  <div class="my-2 mx-4" data-controller="ratings">
+  <div class="flex text-2xl text-akaroa-900 font-semibold m-4">
+    <h1>Rate</h1>
+  </div>
+  <div class="lex flex-col mx-4 text-akaroa-900" data-controller="ratings">
   <%= form_with model: [@venue, @rating] do |form| %>
-    <div class="flex flex-col">
-      <div class="mx-8">
-        <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
-          <%= form.label :chicken_rating, "Chicken" %>
-          <%= form.hidden_field :chicken_rating, data: { ratings_target: "ratingInput" } %>
-          <div class="flex my-2">
-            <% [1, 2, 3, 4, 5].each do |value| %>
-              <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 focus:bg-akaroa-400 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
-            <% end %>
-          </div>
-        </div>
-        <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
-          <%= form.label :crumb_rating, "Crumb" %>
-          <%= form.hidden_field :crumb_rating, data: { ratings_target: "ratingInput" } %>
-          <div class="flex my-2">
-            <% [1, 2, 3, 4, 5].each do |value| %>
-              <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 focus:bg-akaroa-400 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
-            <% end %>
-          </div>
-        </div>
-        <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
-          <%= form.label :topping_rating, "Topping" %>
-          <%= form.hidden_field :topping_rating, data: { ratings_target: "ratingInput" } %>
-          <div class="flex my-2">
-            <% [1, 2, 3, 4, 5].each do |value| %>
-              <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 focus:bg-akaroa-400 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
-            <% end %>
-          </div>
-        </div>
-        <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
-          <%= form.label :sides_rating, "Sides" %>
-          <%= form.hidden_field :sides_rating, data: { ratings_target: "ratingInput" } %>
-          <div class="flex my-2">
-            <% [1, 2, 3, 4, 5].each do |value| %>
-              <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 focus:bg-akaroa-400 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
-            <% end %>
-          </div>
-        </div>
-        <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
-          <%= form.label :venue_rating, "Venue" %>
-          <%= form.hidden_field :venue_rating, data: { ratings_target: "ratingInput" } %>
-          <div class="flex my-2">
-            <% [1, 2, 3, 4, 5].each do |value| %>
-              <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 focus:bg-akaroa-400 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
-            <% end %>
-          </div>
-        </div>
-        <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
-          <%= form.label :total_rating, "Overall" %>
-          <%= form.hidden_field :total_rating, data: { ratings_target: "ratingInput" } %>
-          <div class="flex my-2">
-            <% [1, 2, 3, 4, 5].each do |value| %>
-              <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 focus:bg-akaroa-400 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
-            <% end %>
-          </div>
+    <div class="ml-2 mr-40">
+      <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
+        <%= form.label :chicken_rating, "Chicken", class: "font-semibold" %>
+        <%= form.hidden_field :chicken_rating, data: { ratings_target: "ratingInput" } %>
+        <div class="flex my-2">
+          <% [1, 2, 3, 4, 5].each do |value| %>
+            <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
+          <% end %>
         </div>
       </div>
-      <div class="flex flex-col">
-        <%= form.label :comment %>
-        <%= form.text_field :comment %>
+      <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
+        <%= form.label :crumb_rating, "Crumb", class: "font-semibold" %>
+        <%= form.hidden_field :crumb_rating, data: { ratings_target: "ratingInput" } %>
+        <div class="flex my-2">
+          <% [1, 2, 3, 4, 5].each do |value| %>
+            <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
+          <% end %>
+        </div>
       </div>
-      <div class="flex flex-col">
-        <%= form.label :price, "Price $" %>
-        <%= form.number_field :price %>
+      <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
+        <%= form.label :topping_rating, "Topping", class: "font-semibold" %>
+        <%= form.hidden_field :topping_rating, data: { ratings_target: "ratingInput" } %>
+        <div class="flex my-2">
+          <% [1, 2, 3, 4, 5].each do |value| %>
+            <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
+          <% end %>
+        </div>
       </div>
-      <div>
-        <%= form.submit "Submit rating", class: "bg-akaroa-200 hover:bg-akaroa-500 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded" %>
+      <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
+        <%= form.label :sides_rating, "Sides", class: "font-semibold" %>
+        <%= form.hidden_field :sides_rating, data: { ratings_target: "ratingInput" } %>
+        <div class="flex my-2">
+          <% [1, 2, 3, 4, 5].each do |value| %>
+            <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
+          <% end %>
+        </div>
       </div>
+      <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
+        <%= form.label :venue_rating, "Venue", class: "font-semibold" %>
+        <%= form.hidden_field :venue_rating, data: { ratings_target: "ratingInput" } %>
+        <div class="flex my-2">
+          <% [1, 2, 3, 4, 5].each do |value| %>
+            <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
+          <% end %>
+        </div>
+      </div>
+      <div data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center">
+        <%= form.label :total_rating, "Overall", class: "font-bold" %>
+        <%= form.hidden_field :total_rating, data: { ratings_target: "ratingInput" } %>
+        <div class="flex my-2">
+          <% [1, 2, 3, 4, 5].each do |value| %>
+            <%= button_tag value.to_s, type: "button", class: "rating-button bg-akaroa-200 hover:bg-akaroa-500 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-akaroa-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center  my-2">
+      <%= form.label :price, "Price $" %>
+      <%= form.number_field :price, class: "block w-60 px-2 py-1 ml-1 text-lg text-left bg-akaroa-50 border-akaroa-300 focus:outline-none focus:ring-akaroa-600 focus:border-akaroa-800 rounded-md" %>
+    </div>
+    <div class="flex flex-col my-2">
+      <%= form.label :comment %>
+      <%= form.text_area :comment, size: "70x3", class: "block w-full px-2 py-1 text-lg text-left bg-akaroa-50 border-akaroa-300 focus:outline-none focus:ring-akaroa-600 focus:border-akaroa-800 rounded-md" %>
+    </div>
+    <div>
+      <%= form.submit "Submit rating", class: "bg-akaroa-200 hover:bg-akaroa-500 text-akaroa-700 text-lg font-semibold hover:text-white py-1 px-3 ml-8 mr-2 my-4 border border-akaroa-500 hover:border-transparent rounded" %>
     </div>
   <% end %>
 </div>

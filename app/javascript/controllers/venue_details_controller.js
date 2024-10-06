@@ -3,13 +3,6 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["ratingsDiv", "detailsDiv", "ratingsButton", "detailsButton"]
 
-  connect() {
-    this.ratingsButtonTarget.classList.add("bg-akaroa-200");
-    this.ratingsButtonTarget.classList.remove("bg-transparent");
-    this.detailsButtonTarget.classList.remove("bg-akaroa-200");
-    this.detailsButtonTarget.classList.add("bg-transparent");
-  }
-
   showRatingsDiv() {
     this.ratingsDivTarget.classList.add("flex");
     this.ratingsDivTarget.classList.remove("hidden");
