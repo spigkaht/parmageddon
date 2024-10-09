@@ -1,8 +1,5 @@
-<div class="flex flex-col w-full h-full">
-  <div class="flex justify-center text-2xl text-saffron-mango-900 font-semibold m-4">
-    <h1>Rate <%= @venue.name %></h1>
-  </div>
-  <%= form_with model: [@venue, @rating] do |form| %>
+<turbo-frame id="submit-rating-frame">
+  <%= form_with model: [@venue, @rating], data: { turbo_frame: "submit-rating-frame" } do |form| %>
     <div class="flex flex-col items-center text-saffron-mango-900" data-controller="ratings">
       <table class="table-fixed items-center">
         <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center my-2">
@@ -61,4 +58,4 @@
       </div>
     </div>
   <% end %>
-</div>
+</turbo-frame>

@@ -93,13 +93,14 @@ export default class extends Controller {
   async plotMarkers(venues) {
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
     this.currentInfoWindow = null;
+    this.currentMarker = null; // Track the currently clicked marker
 
     venues.forEach(venue => {
       const position = new google.maps.LatLng(parseFloat(venue.lat), parseFloat(venue.lng));
       const content = document.createElement("div");
       content.classList.add("flex", "flex-col", "justify-between", "items-center", "relative", "z-50")
       content.innerHTML = `
-      <div class="hidden flex-col bg-saffron-mango-500 text-saffron-mango-950 opacity-90 rounded-md border border-saffron-mango-950 py-0.5 px-1.5" id="infoDiv">
+      <div class="hidden flex-col bg-saffron-mango-400 text-saffron-mango-950 opacity-90 rounded-md border border-saffron-mango-950 py-0.5 px-1.5" id="infoDiv">
         <p class="font-bold text-base">${venue.name}</p>
         <div class="flex justify-between items-center">
           <div class="flex">
@@ -108,11 +109,10 @@ export default class extends Controller {
             </span>
             <p class="text-lg">${venue.rating}</p>
           </div>
-          <a href="/venues/${venue.id}" class="ml-2 text-base text-saffron-mango-950 underline" data-turbo="false">View</a>
         </div>
       </div>
       <div>
-        <img src="https://res.cloudinary.com/dp0apr6y4/image/upload/v1718612885/chicken-marker_rivnug.svg" style="width:40px;height:40px;margin-top:-5px;">
+        <img src="https://res.cloudinary.com/dp0apr6y4/image/upload/v1718612885/chicken-marker_rivnug.svg" class="marker-img" style="width:40px;height:40px;margin-top:-2px;">
       </div>
       `;
 
@@ -125,6 +125,16 @@ export default class extends Controller {
       });
 
       marker.addListener("click", () => {
+        if (this.currentMarker && this.currentMarker !== marker) {
+          const previousMarkerImg = this.currentMarker.content.querySelector(".marker-img");
+          previousMarkerImg.style.width = "40px";
+          previousMarkerImg.style.height = "40px";
+        }
+
+        const markerImg = marker.content.querySelector(".marker-img");
+        markerImg.style.width = "60px";
+        markerImg.style.height = "60px";
+
         document.querySelectorAll("#infoDiv").forEach((element) => element.classList.add("hidden"));
         const infoDiv = marker.content.querySelector("#infoDiv");
         if (infoDiv.classList.contains("hidden")) {
@@ -136,6 +146,11 @@ export default class extends Controller {
           infoDiv.classList.remove("flex");
           marker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
         }
+
+        const venueUrl = `/venues/${venue.id}`;
+        Turbo.visit(venueUrl, { frame: "venue-details" });
+
+        this.currentMarker = marker;
       });
 
       this.bounds.extend(marker.position);
@@ -165,8 +180,19 @@ export default class extends Controller {
     window.location.href = `?latitude=${lat}&longitude=${lng}`;
   }
 
+  initDefaultMap() {
+    const mapOptions = {
+      center: { lat: -37.8136, lng: 144.9631 },
+      zoom: 11,
+      disableDefaultUI: true,
+      mapId: "8920b6736ae8305a",
+    };
+
+    this.map = new Map(this.mapDivTarget, mapOptions);
+  }
+
   disconnect() {
-    if (this.map) {
+    if (this.map && !document.body.contains(this.mapDivTarget)) {
       google.maps.event.clearInstanceListeners(this.map);
       this.map = null;
     }

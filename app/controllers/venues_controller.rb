@@ -11,5 +11,10 @@ class VenuesController < ApplicationController
 
   def show
     @venue = Venue.find(params[:id])
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream 
+    end
   end
 end

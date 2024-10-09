@@ -30,7 +30,7 @@
 .loader-venue {
   position: absolute;
   z-index: 50;
-  top: 80%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: fit-content;
@@ -42,6 +42,10 @@
 
 .loader:before {
   content: "Loading...";
+}
+
+.loader-venue:before {
+  content: "Loading..."
 }
 
 @keyframes l4 {

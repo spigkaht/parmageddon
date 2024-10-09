@@ -8,8 +8,8 @@ export default class extends Controller {
     const ratingGroup = event.currentTarget.closest(".rating-group");
 
     const buttons = ratingGroup.querySelectorAll(".rating-button");
-    buttons.forEach(button => button.classList.remove("bg-akaroa-500", "text-white", "border-transparent"));
-    event.currentTarget.classList.add("bg-akaroa-500", "text-white", "border-transparent");
+    buttons.forEach(button => button.classList.remove("bg-saffron-mango-500", "text-white", "border-transparent"));
+    event.currentTarget.classList.add("bg-saffron-mango-500", "text-white", "border-transparent");
 
     const ratingInput = ratingGroup.querySelector("[data-ratings-target='ratingInput']");
     if (ratingInput) {
