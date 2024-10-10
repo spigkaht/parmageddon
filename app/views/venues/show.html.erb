@@ -1,90 +1,23 @@
 <div class="flex flex-col w-full h-full" data-controller="venue-details">
   <turbo-frame id="venue-details" data-turbo-action="replace">
-    <div class="h-full flex flex-col font-['Open_Sans'] text-saffron-mango-900 px-2">
-      <div class="py-2">
-        <h1 class="text-2xl font-semibold"><%= @venue.name %></h1>
-        <div class="w-1/4 h-1 py-2 ml-2 border-b-2 border-saffron-mango-950"></div>
-      </div>
-      <div class="flex flex-col" data-venue-details-target="ratingsDiv">
-        <ul class="flex flex-col items-end text-2xl py-1 mt-4">
-          <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 pb-2">
-            <p class="font-bold">MEAT</p>
-            <span class="material-symbols-sharp !font-bold !text-3xl ml-2 mr-5">
-              star
-            </span>
-            <%= @venue.chicken_rating_average %>
-          </li>
-          <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-2">
-            <p class="font-bold">CRUMB</p>
-            <span class="material-symbols-sharp !font-bold !text-3xl ml-2 mr-5">
-              star
-            </span>
-            <%= @venue.crumb_rating_average %>
-          </li>
-          <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-2">
-            <p class="font-bold">TOPPING</p>
-            <span class="material-symbols-sharp !font-bold !text-3xl ml-2 mr-5">
-              star
-            </span>
-            <%= @venue.topping_rating_average %>
-          </li>
-          <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-2">
-            <p class="font-bold">SIDES</p>
-            <span class="material-symbols-sharp !font-bold !text-3xl ml-2 mr-5">
-              star
-            </span>
-            <%= @venue.sides_rating_average %>
-          </li>
-          <li class="flex justify-end items-center w-48 pt-2">
-            <p class="font-bold">VENUE</p>
-            <span class="material-symbols-sharp !font-bold !text-3xl ml-2 mr-5">
-              star
-            </span>
-            <%= @venue.venue_rating_average %>
-          </li>
-        </ul>
-        <div class="flex justify-between items-center text-2xl border-y border-saffron-mango-950 mt-6 pl-2 pb-2 pt-2">
-          <div class="flex justify-between items-center">
-            <p>
-              <p class="font-bold">TOTAL</p>
-              <span class="material-symbols-sharp !font-bold !text-3xl ml-2 mr-5">
-                star
-              </span>
-              <%= @venue.total_rating_average %></strong>
-            </p>
-          </div>
-          <div>
-            <p>Rated <%= @venue.ratings.count %> times</p>
-          </div>
-        </div>
-      </div>
-      <div class="hidden flex-col ml-2 mt-4" data-venue-details-target="detailsDiv">
-        <p><%= @venue.address %></p>
-        <p><%= @venue.phone %></p>
-        <%= link_to "#{@venue.website}", @venue.website, class: "transition ease-in-out duration-300 text-saffron-mango-800 hover:text-saffron-mango-950" %>
-        <h4 class="mt-3">Opening hours</h4>
-        <% if @venue.hours %>
-          <% JSON.parse(@venue.hours).each do |hours| %>
-            <p><%= hours %></p>
-          <% end %>
-        <% else %>
-          <p>Not provided</p>
-        <% end %>
-      </div>
-      <div class="flex justify-between mt-auto py-3 mx-4">
-        <%= link_to "Submit Rating", new_venue_rating_path(@venue), class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded", data: { turbo_frame: "submit-rating-frame" } %>
-        <div class="flex justify-between ml-3">
-          <%= button_tag "Ratings", type: "button", class: "transition ease-in-out duration-300 bg-saffron-mango-400 hover:bg-saffron-mango-600 text-saffron-mango-900 text-lg font-semibold hover:text-white py-1 px-2 mr-3 border border-saffron-mango-600 hover:border-transparent rounded", data: { action: "click->venue-details#showRatingsDiv", venue_details_target: "ratingsButton" } %>
-          <%= button_tag "Details", type: "button", class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-2 border border-saffron-mango-600 hover:border-transparent rounded", data: { action: "click->venue-details#showDetailsDiv", venue_details_target: "detailsButton" } %>
-        </div>
-      </div>
+    <turbo-frame id="ratings-frame">
+      <%= render "venues/ratings", venue: @venue %>
+    </turbo-frame>
+    <turbo-frame id="details-frame">
+    </turbo-frame>
+    <turbo-frame id="submit-rating-frame">
+    </turbo-frame>
+  </turbo-frame>
+  <div class="flex justify-between mt-auto py-3 mx-4">
+    <div class="flex justify-between ml-3">
+      <%= button_to "Ratings", venue_path(@venue, section: 'ratings'), data: { turbo_frame: "ratings-frame" }, method: :get, class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
+      <%= button_to "Details", venue_path(@venue, section: 'details'), data: { turbo_frame: "details-frame" }, method: :get, class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
     </div>
-  </turbo-frame>
-  <turbo-frame id="submit-rating-frame">
-  </turbo-frame>
-  <div class="w-full h-2/3 flex flex-col relative" data-controller="google-maps">
+    <%= button_to "Submit Rating", venue_path(@venue, section: 'submit_rating'), data: { turbo_frame: "submit-rating-frame" }, method: :get, class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
+  </div>
+  <div class="w-full h-[380px] flex flex-col relative" data-controller="google-maps">
     <%= button_tag "Search here", class: "transition ease-in-out duration-300 bg-transparent z-50 absolute top-2 left-2 hover:bg-saffron-mango-600 text-saffron-mango-700 text-sm font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded", data: { action: "click->google-maps#centerMap" } %>
     <div class="loader-venue" data-google-maps-target="loaderDiv"></div>
-    <div id="map" class="flex justify-center items-center w-full h-full opacity-50" data-google-maps-target="mapDiv"></div>
+    <div id="map" class="flex justify-center items-center w-full h-[400px] opacity-50" data-google-maps-target="mapDiv"></div>
   </div>
 </div>
