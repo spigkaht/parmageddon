@@ -3,10 +3,6 @@ class RatingsController < ApplicationController
 
   def new
     @rating = Rating.new
-    respond_to do |format|
-      format.html # Renders the normal page
-      format.turbo_stream { render turbo_stream: turbo_stream.replace("submit-rating-frame", partial: "ratings/form", locals: { rating: @rating, venue: @venue }) }
-    end
   end
 
   def create

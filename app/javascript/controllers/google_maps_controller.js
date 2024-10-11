@@ -93,7 +93,7 @@ export default class extends Controller {
   async plotMarkers(venues) {
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
     this.currentInfoWindow = null;
-    this.currentMarker = null; // Track the currently clicked marker
+    this.currentMarker = null;
 
     venues.forEach(venue => {
       const position = new google.maps.LatLng(parseFloat(venue.lat), parseFloat(venue.lng));
@@ -112,7 +112,7 @@ export default class extends Controller {
         </div>
       </div>
       <div>
-        <img src="https://res.cloudinary.com/dp0apr6y4/image/upload/v1718612885/chicken-marker_rivnug.svg" class="marker-img" style="width:40px;height:40px;margin-top:-2px;">
+        <img src="https://res.cloudinary.com/dp0apr6y4/image/upload/v1718612885/chicken-marker_ecqxfi.svg" class="marker-img" style="width:30px;height:30px;margin-top:-2px;">
       </div>
       `;
 
@@ -125,32 +125,37 @@ export default class extends Controller {
       });
 
       marker.addListener("click", () => {
-        if (this.currentMarker && this.currentMarker !== marker) {
-          const previousMarkerImg = this.currentMarker.content.querySelector(".marker-img");
-          previousMarkerImg.style.width = "40px";
-          previousMarkerImg.style.height = "40px";
-        }
-
         const markerImg = marker.content.querySelector(".marker-img");
-        markerImg.style.width = "60px";
-        markerImg.style.height = "60px";
-
-        document.querySelectorAll("#infoDiv").forEach((element) => element.classList.add("hidden"));
         const infoDiv = marker.content.querySelector("#infoDiv");
-        if (infoDiv.classList.contains("hidden")) {
-          infoDiv.classList.remove("hidden");
-          infoDiv.classList.add("flex");
-          marker.zIndex = google.maps.Marker.MAX_ZINDEX + 1;
-        } else {
+
+        if (this.currentMarker === marker) {
+          markerImg.style.width = "30px";
+          markerImg.style.height = "30px";
           infoDiv.classList.add("hidden");
           infoDiv.classList.remove("flex");
           marker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
+          this.currentMarker = null;
+        } else {
+          if (this.currentMarker) {
+            const previousMarkerImg = this.currentMarker.content.querySelector(".marker-img");
+            const previousInfoDiv = this.currentMarker.content.querySelector("#infoDiv");
+            previousMarkerImg.style.width = "30px";
+            previousMarkerImg.style.height = "30px";
+            previousInfoDiv.classList.add("hidden");
+            previousInfoDiv.classList.remove("flex");
+            this.currentMarker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
+          }
+          markerImg.style.width = "50px";
+          markerImg.style.height = "50px";
+          infoDiv.classList.remove("hidden");
+          infoDiv.classList.add("flex");
+          marker.zIndex = google.maps.Marker.MAX_ZINDEX + 1;
+
+          this.currentMarker = marker;
         }
 
         const venueUrl = `/venues/${venue.id}`;
         Turbo.visit(venueUrl, { frame: "venue-details" });
-
-        this.currentMarker = marker;
       });
 
       this.bounds.extend(marker.position);
