@@ -11,7 +11,7 @@ class RatingsController < ApplicationController
     if @rating.save
       redirect_to venue_path(@venue)
     else
-      render :new, status: :unprocessable_entity
+      render "venues/show", status: :unprocessable_entity
     end
   end
 

@@ -16,4 +16,19 @@ export default class extends Controller {
       ratingInput.value = ratingValue;
     }
   }
+
+  validate(event) {
+    let allValid = true;
+
+    this.ratingInputTargets.forEach((ratingInput) => {
+      if (ratingInput.value === "") {
+        allValid = false;
+      }
+    });
+
+    if (!allValid) {
+      event.preventDefault();
+      alert("All ratings are required.");
+    }
+  }
 }
