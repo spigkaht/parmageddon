@@ -1,10 +1,10 @@
-<div class="flex flex-col flex-grow font-['Open_Sans'] text-saffron-mango-900 px-2">
-  <div class="py-1.5">
-    <h1 class="text-xl font-semibold"><%= venue.name %></h1>
-    <div class="w-1/4 h-1 py-1.5 ml-2 border-b-2 border-saffron-mango-950"></div>
+<div class="flex flex-col flex-grow font-['Open_Sans'] text-saffron-mango-900">
+  <div class="px-2 py-2">
+    <h1 class="text-2xl font-semibold"><%= venue.name %></h1>
+    <div class="w-1/4 h-1 py-2 ml-2 border-b-2 border-saffron-mango-950"></div>
   </div>
-  <div class="flex flex-col h-full" data-venue-details-target="ratingsDiv">
-    <ul class="flex flex-col items-end text-xl py-1 mt-3">
+  <div class="flex flex-col h-full" style="background-image: url(<%= image_path "parma-trans.png" %>);background-repeat:no-repeat;background-size:80%;" data-venue-details-target="ratingsDiv">
+    <ul class="flex flex-col items-end text-xl py-1 pr-3 mt-3">
       <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 pb-2">
         <p class="font-bold">MEAT</p>
         <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
@@ -41,7 +41,7 @@
         <%= venue.venue_rating_average %>
       </li>
     </ul>
-    <div class="flex justify-between items-center text-xl border-y border-saffron-mango-950 mt-auto pl-2 py-1.5">
+    <div class="flex justify-between items-center text-xl border-y border-saffron-mango-950 mt-auto px-4 py-1.5">
       <div class="flex justify-between items-center">
         <p>
           <p class="font-bold">TOTAL</p>

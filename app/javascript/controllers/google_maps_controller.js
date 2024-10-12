@@ -2,6 +2,9 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["mapDiv", "loaderDiv"];
+  static values = {
+    page: String
+  }
   bounds = null;
 
   connect() {
@@ -98,6 +101,10 @@ export default class extends Controller {
     venues.forEach(venue => {
       const position = new google.maps.LatLng(parseFloat(venue.lat), parseFloat(venue.lng));
       const content = document.createElement("div");
+      let venueLink = '';
+      if (this.pageValue === "index") {
+        venueLink = `<a href="/venues/${venue.id}" class="text-saffron-mango-600 hover:text-saffron-mango-800 font-bold text-lg">View</a>`;
+      }
       content.classList.add("flex", "flex-col", "justify-between", "items-center", "relative", "z-50")
       content.innerHTML = `
       <div class="hidden flex-col bg-saffron-mango-400 text-saffron-mango-950 opacity-90 rounded-md border border-saffron-mango-950 py-0.5 px-1.5" id="infoDiv">
@@ -109,6 +116,7 @@ export default class extends Controller {
             </span>
             <p class="text-lg">${venue.rating}</p>
           </div>
+          ${venueLink}
         </div>
       </div>
       <div>
@@ -154,8 +162,10 @@ export default class extends Controller {
           this.currentMarker = marker;
         }
 
-        const venueUrl = `/venues/${venue.id}`;
-        Turbo.visit(venueUrl, { frame: "venue-details" });
+        if (this.pageValue == "venue") {
+          const venueUrl = `/venues/${venue.id}`;
+          Turbo.visit(venueUrl, { frame: "venue-details" });
+        }
       });
 
       this.bounds.extend(marker.position);
