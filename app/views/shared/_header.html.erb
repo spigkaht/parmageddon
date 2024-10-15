@@ -7,10 +7,12 @@
         </div>
       <% end %>
       <div class="flex p-3">
+        <%= link_to contact_path do %>
         <div class="flex items-center px-1">
-          <%= image_tag "rate.png", size: "35x35", class: "px-2" %>
-          <p class="transition ease-in-out duration-300 text-lavender-gray-200 hover:text-lavender-gray-400 text-lg">Rate</p>
+          <%= image_tag "email.png", size: "35x35", class: "px-2" %>
+          <p class="transition ease-in-out duration-300 text-lavender-gray-200 hover:text-lavender-gray-400 text-lg">Contact</p>
         </div>
+        <% end %>
         <%= link_to venues_path do %>
           <div class="flex items-center px-1">
             <%= image_tag "chicken.png", size: "35x35", class: "px-2" %>

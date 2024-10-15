@@ -1,0 +1,19 @@
+<div class="py-4 px-4 mx-auto max-w-screen-md">
+  <h2 class="mb-4 text-3xl tracking-tight font-bold text-center text-saffron-mango-950">Contact Us</h2>
+  <p class="mb-8 font-light text-center text-saffron-mango-700">Got a technical issue? Want to send feedback about a beta feature? Need details about our Business plan? Let us know.</p>
+  <%= form_with model: @contact, url: contact_path, class: "space-y-8" do |form| %>
+    <div>
+      <%= form.label :email, "Email", class: "block mb-2 text-sm font-medium text-saffron-mango-950" %>
+      <%= form.email_field :email, placeholder: "email@example.com", required: true, class: "shadow-sm bg-saffron-mango-50 border border-saffron-mango-300 text-saffron-mango-950 text-sm rounded-lg focus:ring-saffron-mango-500 focus:border-saffron-mango-500 block w-full p-2.5" %>
+    </div>
+    <div>
+      <%= form.label :subject, "Subject", class: "block mb-2 text-sm font-medium text-saffron-mango-950" %>
+      <%= form.text_field :subject, placeholder: "Let us know how we can help you", class: "block p-3 w-full text-sm text-saffron-mango-950 bg-saffron-mango-50 rounded-lg border border-saffron-mango-300 shadow-sm focus:ring-saffron-mango-500 focus:border-saffron-mango-500" %>
+    </div>
+    <div>
+      <%= form.label :message, "Your message", class: "block mb-2 text-sm font-medium text-saffron-mango-950" %>
+      <%= form.text_area :message, size: "70x3", placeholder: "Leave a comment...", class: "block p-2.5 w-full text-sm text-saffron-mango-950 bg-saffron-mango-50 rounded-lg shadow-sm border border-saffron-mango-300 focus:ring-saffron-mango-500 focus:border-saffron-mango-500" %>
+    </div>
+    <%= form.submit "Send message", class: "py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-saffron-mango-700 hover:bg-saffron-mango-800 focus:ring-4 focus:outline-none focus:ring-saffron-mango-300" %>
+  <% end %>
+</div>

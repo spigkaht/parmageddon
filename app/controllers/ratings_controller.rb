@@ -9,7 +9,7 @@ class RatingsController < ApplicationController
     @rating = Rating.new(rating_params)
     @rating.venue = @venue
     if @rating.save
-      redirect_to venue_path(@venue)
+      redirect_to venue_path(@venue), notice: "Rating submitted"
     else
       render "venues/show", status: :unprocessable_entity
     end

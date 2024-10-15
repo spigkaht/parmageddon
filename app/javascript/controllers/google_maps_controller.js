@@ -98,6 +98,23 @@ export default class extends Controller {
     this.currentInfoWindow = null;
     this.currentMarker = null;
 
+    this.mapDivTarget.addEventListener("click", (event) => {
+      if (!event.target.closest(".marker-img") && !event.target.closest("#infoDiv")) {
+        if (this.currentMarker) {
+          const previousMarkerImg = this.currentMarker.content.querySelector(".marker-img");
+          const previousInfoDiv = this.currentMarker.content.querySelector("#infoDiv");
+
+          previousMarkerImg.style.width = "30px";
+          previousMarkerImg.style.height = "30px";
+          previousInfoDiv.classList.add("hidden");
+          previousInfoDiv.classList.remove("flex");
+
+          this.currentMarker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
+          this.currentMarker = null;
+        }
+      }
+    });
+
     venues.forEach(venue => {
       const position = new google.maps.LatLng(parseFloat(venue.lat), parseFloat(venue.lng));
       const content = document.createElement("div");
@@ -120,7 +137,7 @@ export default class extends Controller {
         </div>
       </div>
       <div>
-        <img src="https://res.cloudinary.com/dp0apr6y4/image/upload/v1718612885/chicken-marker_ecqxfi.svg" class="marker-img" style="width:30px;height:30px;margin-top:-2px;">
+        <img src="https://res.cloudinary.com/dp0apr6y4/image/upload/v1718612885/chicken-marker_ecqxfi.svg" class="marker-img transition-[width]" style="width:30px;height:30px;margin-top:-2px;">
       </div>
       `;
 
@@ -153,6 +170,7 @@ export default class extends Controller {
             previousInfoDiv.classList.remove("flex");
             this.currentMarker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
           }
+          this.animateMapCenter(position);
           markerImg.style.width = "50px";
           markerImg.style.height = "50px";
           infoDiv.classList.remove("hidden");
@@ -193,6 +211,28 @@ export default class extends Controller {
     const lng = center.lng();
 
     window.location.href = `?latitude=${lat}&longitude=${lng}`;
+  }
+
+  animateMapCenter(newCenter) {
+    const map = this.map;
+    const currentCenter = map.getCenter();
+    const latDiff = newCenter.lat() - currentCenter.lat();
+    const lngDiff = newCenter.lng() - currentCenter.lng();
+    const steps = 10;
+    let stepCount = 0;
+
+    function animate() {
+      stepCount += 1;
+      const lat = currentCenter.lat() + (latDiff * stepCount) / steps;
+      const lng = currentCenter.lng() + (lngDiff * stepCount) / steps;
+      map.setCenter({ lat, lng });
+
+      if (stepCount < steps) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    requestAnimationFrame(animate);
   }
 
   initDefaultMap() {

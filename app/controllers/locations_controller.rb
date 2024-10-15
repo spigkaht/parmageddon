@@ -23,7 +23,8 @@ class LocationsController < ApplicationController
 
       Venue.find_or_create_by(
         name: location["name"],
-        address: location["vicinity"]
+        address: location["vicinity"],
+        suburb: location["plus_code"]["compound_code"].split(",")[0].split[1..-2].join(" ")
       ) do |venue|
         if venue_results
           venue.hours = venue_results["current_opening_hours"]["weekday_text"] if venue_results["current_opening_hours"]
