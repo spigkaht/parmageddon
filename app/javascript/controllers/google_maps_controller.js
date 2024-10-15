@@ -207,7 +207,9 @@ export default class extends Controller {
 
   centerMap() {
     const center = this.map.getCenter();
-    const lat = center.lat();
+    const lat = center.lat() - 1;
+    console.log("map center: ", center.lat())
+    console.log("new center: ", lat)
     const lng = center.lng();
 
     window.location.href = `?latitude=${lat}&longitude=${lng}`;
@@ -215,9 +217,15 @@ export default class extends Controller {
 
   animateMapCenter(newCenter) {
     const map = this.map;
+
+    const adjustedNewCenter = {
+      lat: newCenter.lat() + 0.02,
+      lng: newCenter.lng()
+    };
+
     const currentCenter = map.getCenter();
-    const latDiff = newCenter.lat() - currentCenter.lat();
-    const lngDiff = newCenter.lng() - currentCenter.lng();
+    const latDiff = adjustedNewCenter.lat - currentCenter.lat();
+    const lngDiff = adjustedNewCenter.lng - currentCenter.lng();
     const steps = 10;
     let stepCount = 0;
 
