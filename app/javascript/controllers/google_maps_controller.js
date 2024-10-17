@@ -136,7 +136,7 @@ export default class extends Controller {
           ${venueLink}
         </div>
       </div>
-      <div>
+      <div class="flex justify-center items-center" style="width: 50px; height: 50px;">
         <img src="https://res.cloudinary.com/dp0apr6y4/image/upload/v1718612885/chicken-marker_ecqxfi.svg" class="marker-img transition-[width]" style="width:30px;height:30px;margin-top:-2px;">
       </div>
       `;
@@ -150,6 +150,8 @@ export default class extends Controller {
       });
 
       marker.addListener("click", () => {
+        this.map.setZoom(13);
+
         const markerImg = marker.content.querySelector(".marker-img");
         const infoDiv = marker.content.querySelector("#infoDiv");
 
