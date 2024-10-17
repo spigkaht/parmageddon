@@ -50,6 +50,7 @@ module.exports = {
           '950': '#2c2c3f',
         },
         'saffron-mango': {
+          '20': '#faf8f2',
           '50': '#fff9eb',
           '100': '#ffeec6',
           '200': '#ffdb88',
@@ -78,6 +79,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+        league: ['League Spartan', ...defaultTheme.fontFamily.sans],
       },
     },
   },
