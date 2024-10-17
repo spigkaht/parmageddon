@@ -1,7 +1,7 @@
-<div class="flex flex-col flex-grow font-['Open_Sans'] text-saffron-mango-900">
-  <div class="px-2 py-2">
-    <h1 class="text-2xl font-semibold"><%= venue.name %></h1>
-    <div class="w-1/4 h-1 py-2 ml-2 border-b-2 border-saffron-mango-950"></div>
+<div class="flex flex-col font-['Open_Sans'] text-saffron-mango-900">
+  <div class="px-2 py-2 whitespace-nowrap" data-controller="text-shrink">
+    <h1 class="text-2xl font-semibold" data-text-shrink-target="text"><%= venue.name %></h1>
+    <div class="w-1/4 h-1 py-1 ml-2 border-b-2 border-saffron-mango-950"></div>
   </div>
   <div class="flex flex-col h-full" style="background-image: url(<%= image_path "parma-trans.png" %>);background-repeat:no-repeat;background-size:80%;" data-venue-details-target="ratingsDiv">
     <ul class="flex flex-col items-end text-xl py-1 pr-3">

@@ -120,7 +120,7 @@ export default class extends Controller {
       const content = document.createElement("div");
       let venueLink = '';
       if (this.pageValue === "index") {
-        venueLink = `<a href="/venues/${venue.id}" class="text-saffron-mango-600 hover:text-saffron-mango-800 font-bold text-lg">View</a>`;
+        venueLink = `<a href="/venues/${venue.id}" class="text-saffron-mango-600 hover:text-saffron-mango-800 font-bold text-base">View</a>`;
       }
       content.classList.add("flex", "flex-col", "justify-between", "items-center", "relative", "z-50")
       content.innerHTML = `
@@ -219,7 +219,7 @@ export default class extends Controller {
     const map = this.map;
 
     const adjustedNewCenter = {
-      lat: newCenter.lat() + 0.02,
+      lat: newCenter.lat() + 0.01,
       lng: newCenter.lng()
     };
 
