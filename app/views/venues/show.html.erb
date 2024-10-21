@@ -1,0 +1,27 @@
+<div class="flex flex-col flex-grow w-full h-full" data-controller="venue-details">
+  <div class="h-2/3 flex flex-col">
+    <turbo-frame id="venue-details" data-turbo-action="replace" class="flex flex-col h-full mb-3">
+      <div class="flex flex-col flex-grow" data-venue-details-target="ratingsDiv">
+        <%= render "venues/ratings", venue: @venue %>
+      </div>
+      <div class="hidden h-full flex-grow" data-venue-details-target="detailsDiv">
+        <%= render "venues/details", venue: @venue %>
+      </div>
+      <div class="hidden" data-venue-details-target="formDiv">
+        <%= render "venues/submit_rating", venue: @venue, rating: @rating %>
+      </div>
+    </turbo-frame>
+    <div class="flex justify-between py-3 mx-4 mt-auto" data-venue-details-target="buttonsDiv">
+      <div class="flex justify-between ml-3">
+        <%= button_tag "Ratings", data: { action: "click->venue-details#showRatings", venue_details_target: "ratingsButton" }, class: "transition ease-in-out duration-300 bg-saffron-mango-400 text-saffron-mango-900 hover:bg-saffron-mango-600 text-base font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
+        <%= button_tag "Details", data: { action: "click->venue-details#showDetails", venue_details_target: "detailsButton" }, class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-base font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
+      </div>
+      <%= button_tag "Submit Rating", data: { action: "click->venue-details#showForm", venue_details_target: "formButton" }, class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-base font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
+    </div>
+  </div>
+  <div class="w-full h-1/3 flex flex-col mt-auto relative" data-controller="google-maps" data-venue-details-target="mapDiv" data-google-maps-page-value="venue">
+    <%= button_tag "Search here", class: "transition ease-in-out duration-300 bg-transparent z-50 absolute top-2 left-2 hover:bg-saffron-mango-600 text-saffron-mango-700 text-sm font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded", data: { action: "click->google-maps#centerMap" } %>
+    <div class="loader-venue" data-google-maps-target="loaderDiv"></div>
+    <div id="map" class="flex justify-center items-center w-full h-full opacity-50" data-google-maps-target="mapDiv"></div>
+  </div>
+</div>

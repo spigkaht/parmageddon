@@ -1,0 +1,39 @@
+<div class="flex flex-col w-full bg-saffron-mango-50" data-controller="toggle-venue-search">
+  <div class="flex justify-between w-full px-4 my-4">
+    <%= button_tag "Search for a venue", type: "button", class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-saffron-mango-600 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleVenueSearch" } %>
+    <%= button_tag "Search by location", type: "button", class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-saffron-mango-600 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleLocationSearch" } %>
+    <%= link_to "Show all venues", venues_path, class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-xs sm:text-sm text-center font-semibold hover:text-white py-1 px-2 mx-1 border border-saffron-mango-600 hover:border-transparent rounded" %>
+  </div>
+  <%= form_with url: venues_path, method: :get do |form| %>
+    <div class="hidden justify-center items-center mb-4" data-toggle-venue-search-target="venueInput">
+      <%= form.text_field :venue, placeholder: "Enter venue name", class: "block w-60 px-2 py-1 text-sm text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md" %>
+      <%= form.submit "GO", class: "transition ease-in-out duration-300 text-white bg-saffron-mango-600 hover:bg-saffron-mango-800 focus:ring-4 focus:ring-saffron-mango-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
+    </div>
+  <% end %>
+  <%= form_with url: venues_path, method: :get do |form| %>
+    <div class="hidden justify-center items-center mb-4" data-toggle-venue-search-target="locationInput">
+      <%= form.text_field :location, placeholder: "Enter location (suburb etc)", class: "block w-60 px-2 py-1 text-sm text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md" %>
+      <%= form.submit "GO", class: "transition ease-in-out duration-300 text-white bg-saffron-mango-600 hover:bg-saffron-mango-800 focus:ring-4 focus:ring-saffron-mango-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
+    </div>
+  <% end %>
+</div>
+<div class="relative shadow-md overflow-x-auto rounded-sm">
+  <table class="w-full text-sm text-left text-saffron-mango-600" data-controller="table-sort">
+    <thead class="text-xs text-saffron-mango-700 uppercase bg-saffron-mango-50">
+      <tr>
+        <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="venue">Venue<span class="ml-2"></span></th>
+        <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="location">Location<span class="ml-2"></span></th>
+        <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="rating">Rating<span class="ml-2"></span></th>
+      </tr>
+    </thead>
+    <tbody data-table-sort-target="tableBody">
+      <% @venues.each do |venue| %>
+        <tr class="odd:bg-white even:bg-saffron-mango-50 border-b">
+          <td scope="row" data-column="venue" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs"><%= link_to "#{venue.name}", venue_path(venue) %></td>
+          <td scope="row" data-column="location" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs"><%= venue.suburb %></td>
+          <td scope="row" data-column="rating" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs text-right"><%= venue.total_rating_average %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

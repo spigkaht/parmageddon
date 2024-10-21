@@ -1,0 +1,63 @@
+<div class="flex flex-col font-['Open_Sans'] text-saffron-mango-900">
+  <div class="px-2 py-2 whitespace-nowrap" data-controller="text-shrink">
+    <h1 class="text-2xl font-semibold" data-text-shrink-target="text"><%= venue.name %></h1>
+    <div class="w-1/4 h-1 py-1 ml-2 border-b-2 border-saffron-mango-950"></div>
+  </div>
+  <div class="flex flex-col h-full" style="background-image: url(<%= image_path "parma-trans.png" %>);background-repeat:no-repeat;background-size:80%;" data-venue-details-target="ratingsDiv">
+    <ul class="flex flex-col items-end text-xl py-1 pr-3">
+      <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 pb-2">
+        <p class="font-bold">MEAT</p>
+        <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+          star
+        </span>
+        <p><%= venue.chicken_rating_average %></p>
+      </li>
+      <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5">
+        <p class="font-bold">CRUMB</p>
+        <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+          star
+        </span>
+        <p><%= venue.crumb_rating_average %></p>
+      </li>
+      <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5">
+        <p class="font-bold">TOPPING</p>
+        <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+          star
+        </span>
+        <p><%= venue.topping_rating_average %></p>
+      </li>
+      <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5">
+        <p class="font-bold">SIDES</p>
+        <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+          star
+        </span>
+        <p><%= venue.sides_rating_average %></p>
+      </li>
+      <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5">
+        <p class="font-bold">VENUE</p>
+        <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+          star
+        </span>
+        <%= venue.venue_rating_average %></p>
+      </li>
+      <li class="flex justify-end items-center w-48 pt-2">
+        <p class="font-bold mr-6">PRICE</p>
+        <p>$<%= number_with_precision venue.price_average.round(1), :precision => 2 %></p>
+      </li>
+    </ul>
+    <div class="flex justify-between items-center text-xl border-y border-saffron-mango-950 mt-auto px-4 py-1.5">
+      <div class="flex justify-between items-center">
+        <p>
+          <p class="font-bold">TOTAL</p>
+          <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+            star
+          </span>
+          <p><%= venue.total_rating_average %></p>
+        </p>
+      </div>
+      <div>
+        <p>Rated <%= venue.ratings.count %> times</p>
+      </div>
+    </div>
+  </div>
+</div>
