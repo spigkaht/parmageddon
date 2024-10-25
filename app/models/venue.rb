@@ -12,7 +12,10 @@ class Venue < ApplicationRecord
     self.sides_rating_average = ratings.average(:sides_rating)
     self.venue_rating_average = ratings.average(:venue_rating)
     self.price_average = ratings.average(:price)
-    
     save
+  end
+
+  def to_param
+    "#{name.parameterize}-#{suburb.parameterize}"
   end
 end

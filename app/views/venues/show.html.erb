@@ -1,27 +1,103 @@
 <div class="flex flex-col flex-grow w-full h-full" data-controller="venue-details">
-  <div class="h-2/3 flex flex-col">
-    <turbo-frame id="venue-details" data-turbo-action="replace" class="flex flex-col h-full mb-3">
-      <div class="flex flex-col flex-grow" data-venue-details-target="ratingsDiv">
-        <%= render "venues/ratings", venue: @venue %>
+  <turbo-frame id="venue-details" data-turbo-action="replace" data-turbo="false" class="flex flex-col h-full">
+    <div class="min-h-[60%] flex flex-col font-['Open_Sans'] text-saffron-mango-900" style="background-image: url(<%= image_path "parma-trans.png" %>);background-repeat:no-repeat;background-size:cover 80%;">
+      <div class="px-2 py-2 whitespace-nowrap" data-controller="text-shrink">
+        <h1 class="text-2xl font-semibold" data-text-shrink-target="text"><%= @venue.name %></h1>
+        <div class="w-1/4 h-1 py-1 ml-2 border-b-2 border-saffron-mango-950"></div>
       </div>
-      <div class="hidden h-full flex-grow" data-venue-details-target="detailsDiv">
-        <%= render "venues/details", venue: @venue %>
+      <div class="flex justify-between">
+        <div class="flex flex-col justify-between ml-4 [@media(max-width:360px)]:ml-2 my-2" data-venue-details-target="buttonsDiv">
+          <%= select_tag :venue_options, options_for_select([["Ratings", "ratings"], ["Details", "details"]]), class: "w-[6rem] transition ease-in-out duration-300 bg-saffron-mango-300 text-saffron-mango-700 hover:bg-saffron-mango-500 text-base font-semibold hover:text-saffron-mango-100 py-1 px-1.5 mr-1 border border-saffron-mango-600 focus:border-saffron-mango-800 hover:border-transparent rounded", data: { action: "change->venue-details#handleSelect" } %>
+        </div>
+        <div data-venue-details-target="ratingsDiv">
+          <ul class="flex flex-col items-end text-xl pr-3">
+            <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 pb-2 [@media(max-height:760px)]:pb-1">
+              <p class="font-bold">MEAT</p>
+              <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+                star
+              </span>
+              <p><%= @venue.chicken_rating_average %></p>
+            </li>
+            <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5 [@media(max-height:760px)]:py-1">
+              <p class="font-bold">CRUMB</p>
+              <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+                star
+              </span>
+              <p><%= @venue.crumb_rating_average %></p>
+            </li>
+            <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5 [@media(max-height:760px)]:py-1">
+              <p class="font-bold">TOPPING</p>
+              <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+                star
+              </span>
+              <p><%= @venue.topping_rating_average %></p>
+            </li>
+            <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5 [@media(max-height:760px)]:py-1">
+              <p class="font-bold">SIDES</p>
+              <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+                star
+              </span>
+              <p><%= @venue.sides_rating_average %></p>
+            </li>
+            <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5 [@media(max-height:760px)]:py-1">
+              <p class="font-bold">VENUE</p>
+              <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+                star
+              </span>
+              <%= @venue.venue_rating_average %></p>
+            </li>
+            <li class="flex justify-end items-center w-48 pt-2 [@media(max-height:760px)]:pt-1">
+              <p class="font-bold mr-6">PRICE</p>
+              <p>$<%= number_with_precision @venue.price_average.round(1), :precision => 2 %></p>
+            </li>
+          </ul>
+        </div>
+        <div class="hidden" data-venue-details-target="detailsDiv">
+          <div class="flex flex-col items-end h-full text-saffron-mango-900 pr-3 py-2">
+            <p class="text-right"><%= @venue.address %></p>
+            <p><%= @venue.phone %></p>
+            <%= link_to "#{@venue.website}", @venue.website, class: "transition ease-in-out duration-300 text-saffron-mango-800 hover:text-saffron-mango-950" %>
+            <h4 class="mt-3">Opening hours</h4>
+            <% if @venue.hours %>
+              <% JSON.parse(@venue.hours).each do |hours| %>
+                <p><%= hours %></p>
+              <% end %>
+            <% else %>
+              <p>Not provided</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="mt-auto">
+        <div data-venue-details-target="totalsDiv">
+          <div class="flex justify-between items-center text-xl border-y border-saffron-mango-950 px-4 py-1.5 [@media(max-height:760px)]:py-1 my-2  [@media(max-height:760px)]:my-1">
+            <div class="flex justify-between items-center">
+              <p>
+                <p class="font-bold">TOTAL</p>
+                <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
+                  star
+                </span>
+                <p><%= @venue.total_rating_average %></p>
+              </p>
+            </div>
+            <div>
+              <p>Rated <%= @venue.ratings.count %> times</p>
+            </div>
+          </div>
+        </div>
+        <div data-venue-details-target="formButton">
+          <div class="flex justify-end pt-1 pb-3">
+            <%= button_to "Rate venue's Parma", rate_venue_venue_path(@venue),
+                method: :get,
+                data: { turbo_frame: "venue-details" },
+                class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-base font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
+          </div>
+        </div>
       </div>
       <div class="hidden" data-venue-details-target="formDiv">
         <%= render "venues/submit_rating", venue: @venue, rating: @rating %>
       </div>
-    </turbo-frame>
-    <div class="flex justify-between py-3 mx-4 mt-auto" data-venue-details-target="buttonsDiv">
-      <div class="flex justify-between ml-3">
-        <%= button_tag "Ratings", data: { action: "click->venue-details#showRatings", venue_details_target: "ratingsButton" }, class: "transition ease-in-out duration-300 bg-saffron-mango-400 text-saffron-mango-900 hover:bg-saffron-mango-600 text-base font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
-        <%= button_tag "Details", data: { action: "click->venue-details#showDetails", venue_details_target: "detailsButton" }, class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-base font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
-      </div>
-      <%= button_tag "Submit Rating", data: { action: "click->venue-details#showForm", venue_details_target: "formButton" }, class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-base font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
     </div>
-  </div>
-  <div class="w-full h-1/3 flex flex-col mt-auto relative" data-controller="google-maps" data-venue-details-target="mapDiv" data-google-maps-page-value="venue">
-    <%= button_tag "Search here", class: "transition ease-in-out duration-300 bg-transparent z-50 absolute top-2 left-2 hover:bg-saffron-mango-600 text-saffron-mango-700 text-sm font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded", data: { action: "click->google-maps#centerMap" } %>
-    <div class="loader-venue" data-google-maps-target="loaderDiv"></div>
-    <div id="map" class="flex justify-center items-center w-full h-full opacity-50" data-google-maps-target="mapDiv"></div>
-  </div>
+    <%= render "shared/map" %>
+  </turbo-frame>
 </div>

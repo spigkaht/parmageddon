@@ -8,7 +8,7 @@ class LocationsController < ApplicationController
   def find_nearby
     latitude = params[:latitude].to_f
     longitude = params[:longitude].to_f
-    # location_details = fetch_location_details(latitude, longitude)
+    longitude_variance = 2.5 / (111.32 * Math.cos(latitude * Math::PI / 180))
 
     uri = URI("https://places.googleapis.com/v1/places:searchText")
     api_key = ENV.fetch("GMAPS_PLACES_KEY")
@@ -19,11 +19,18 @@ class LocationsController < ApplicationController
     loop do
       request_body = {
         "textQuery": "Pubs",
-        "includedType": "bar"
-        "locationBias": {
-        "circle": {
-          "center": {"latitude": latitude, "longitude": longitude},
-          "radius": 5000.0
+        "includedType": "bar",
+        "locationRestriction": {
+          "rectangle": {
+            "low": {
+              "latitude": latitude - 0.018,
+              "longitude": longitude - longitude_variance
+            },
+            "high": {
+              "latitude": latitude + 0.018,
+              "longitude": longitude + longitude_variance
+            }
+          }
         }
       }
       request_body["pageToken"] = page_token if page_token
@@ -45,6 +52,9 @@ class LocationsController < ApplicationController
         puts "Error: Unable to parse response as JSON."
         break
       end
+
+      puts "============ parsed response ==============="
+      puts parsed_response
 
       venues.concat(parsed_response["places"]) if parsed_response["places"]
 
@@ -102,7 +112,7 @@ class LocationsController < ApplicationController
       end
     end
 
-    radius = 5
+    radius = 2.5
     @venues = Venue.near([latitude, longitude], radius)
 
     markers = @venues.map do |venue|
@@ -111,37 +121,19 @@ class LocationsController < ApplicationController
         lat: venue.latitude,
         lng: venue.longitude,
         name: venue.name,
+        suburb: venue.suburb,
         rating: venue.total_rating_average
       }
     end
 
-    render json: { venues: markers }
+    render json: {
+      venues: markers,
+      bounds: {
+        low_latitude: latitude - 0.018,
+        low_longitude: longitude - longitude_variance,
+        high_latitude: latitude + 0.018,
+        high_longitude: longitude + longitude_variance
+      }
+    }
   end
-
-  # private
-
-  # def fetch_location_details(lat, lng)
-  #   endpoint = "https://maps.googleapis.com/maps/api/geocode/"
-  #   api_key = ENV.fetch('GMAPS_GEO_API_KEY')
-  #   uri = URI("#{endpoint}json?latlng=#{lat},#{lng}&key=#{api_key}")
-
-  #   response = Net::HTTP.get(uri)
-  #   json = JSON.parse(response)
-
-  #   if json["status"] == "OK"
-  #     address_components = json["results"].first["address_components"]
-
-  #     suburb = find_address_component(address_components, "locality")
-  #     state = find_address_component(address_components, "administrative_area_level_1")
-
-  #     { suburb: suburb, state: state } if suburb && state
-  #   else
-  #     nil
-  #   end
-  # end
-
-  # def find_address_component(components, type)
-  #   component = components.find { |comp| comp["types"].include?(type) }
-  #   component ? component["long_name"] : nil
-  # end
 end

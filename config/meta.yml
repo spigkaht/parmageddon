@@ -1,5 +1,5 @@
 meta_product_name: "Parmageddon"
-meta_title: "Parmageddon - find a parma that's right for you"
+meta_title: "Parmageddon | Find a parma that's right for you"
 meta_description: "Ratings app for the dish Chicken Parmigiana"
 meta_image: "cover.png" # should exist in `app/assets/images/`
 twitter_account: "@product_twitter_account" # required for Twitter Cards

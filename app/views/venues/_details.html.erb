@@ -1,9 +1,5 @@
 <div class="flex-col flex-grow h-full text-saffron-mango-900 px-2" data-venue-details-target="detailsDiv">
-  <div class="font-['Open_Sans'] py-2">
-    <h1 class="text-2xl font-semibold"><%= venue.name %></h1>
-    <div class="w-1/4 h-1 py-2 ml-2 border-b-2 border-saffron-mango-950"></div>
-  </div>
-  <div class="flex flex-col h-full mt-3">
+  <div class="flex flex-col items-end h-full mt-3">
     <p><%= venue.address %></p>
     <p><%= venue.phone %></p>
     <%= link_to "#{venue.website}", venue.website, class: "transition ease-in-out duration-300 text-saffron-mango-800 hover:text-saffron-mango-950" %>

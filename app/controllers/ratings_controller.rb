@@ -8,17 +8,32 @@ class RatingsController < ApplicationController
   def create
     @rating = Rating.new(rating_params)
     @rating.venue = @venue
+
     if @rating.save
-      redirect_to venue_path(@venue), notice: "Rating submitted"
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace('venue-details', partial: 'venues/submit_rating', locals: { venue: @venue, rating: Rating.new })
+          # Trigger a full page reload after submission
+          Turbo::StreamsChannel.broadcast_replace_to("venue-details", target: "venue-details", partial: "venues/show", locals: { venue: @venue })
+        end
+        format.html { redirect_to venue_path(@venue), notice: 'Rating was successfully created.' }
+      end
     else
-      render "venues/show", status: :unprocessable_entity
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace('venue-details', partial: 'venues/submit_rating', locals: { venue: @venue, rating: @rating })
+        end
+        format.html { render :new }
+      end
     end
   end
 
   private
 
   def set_venue
-    @venue = Venue.find(params[:venue_id])
+    name, _, suburb = params[:venue_id].rpartition('-')
+    puts "name: #{name}, suburb: #{suburb}"
+    @venue = Venue.find_by!(name: name.titleize.strip, suburb: suburb.titleize.strip)
   end
 
   def rating_params
