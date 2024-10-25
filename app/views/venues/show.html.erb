@@ -5,12 +5,12 @@
         <h1 class="text-2xl font-semibold" data-text-shrink-target="text"><%= @venue.name %></h1>
         <div class="w-1/4 h-1 py-1 ml-2 border-b-2 border-saffron-mango-950"></div>
       </div>
-      <div class="flex justify-between">
-        <div class="flex flex-col justify-between ml-4 [@media(max-width:360px)]:ml-2 my-2" data-venue-details-target="buttonsDiv">
+      <div class="flex justify-between mx-4">
+        <div class="flex flex-col justify-between my-2" data-venue-details-target="buttonsDiv">
           <%= select_tag :venue_options, options_for_select([["Ratings", "ratings"], ["Details", "details"]]), class: "w-[6rem] transition ease-in-out duration-300 bg-saffron-mango-300 text-saffron-mango-700 hover:bg-saffron-mango-500 text-base font-semibold hover:text-saffron-mango-100 py-1 px-1.5 mr-1 border border-saffron-mango-600 focus:border-saffron-mango-800 hover:border-transparent rounded", data: { action: "change->venue-details#handleSelect" } %>
         </div>
         <div data-venue-details-target="ratingsDiv">
-          <ul class="flex flex-col items-end text-xl pr-3">
+          <ul class="flex flex-col items-end text-xl">
             <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 pb-2 [@media(max-height:760px)]:pb-1">
               <p class="font-bold">MEAT</p>
               <span class="material-symbols-sharp !font-bold !text-2xl ml-2 mr-5">
@@ -53,17 +53,17 @@
           </ul>
         </div>
         <div class="hidden" data-venue-details-target="detailsDiv">
-          <div class="flex flex-col items-end h-full text-saffron-mango-900 pr-3 py-2">
+          <div class="flex flex-col h-full text-saffron-mango-900 py-2">
             <p class="text-right"><%= @venue.address %></p>
-            <p><%= @venue.phone %></p>
-            <%= link_to "#{@venue.website}", @venue.website, class: "transition ease-in-out duration-300 text-saffron-mango-800 hover:text-saffron-mango-950" %>
-            <h4 class="mt-3">Opening hours</h4>
+            <p class="text-right"><%= @venue.phone %></p>
+            <%= link_to "Website", @venue.website, class: "transition ease-in-out duration-300 text-saffron-mango-800 hover:text-saffron-mango-950 text-right underline" %>
+            <h4 class="mt-3 text-right">Opening hours</h4>
             <% if @venue.hours %>
               <% JSON.parse(@venue.hours).each do |hours| %>
-                <p><%= hours %></p>
+                <p class="text-right"><%= hours %></p>
               <% end %>
             <% else %>
-              <p>Not provided</p>
+              <p class="text-right">Not provided</p>
             <% end %>
           </div>
         </div>
