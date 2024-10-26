@@ -1,4 +1,8 @@
+require "cgi"
+
 class VenuesController < ApplicationController
+  before_action :set_venue, only: [:show]
+
   def index
     if params[:venue]
       @venues = Venue.where("name ILIKE ?", "%#{params[:venue]}%")
@@ -10,23 +14,13 @@ class VenuesController < ApplicationController
   end
 
   def show
-    name, _, suburb = params[:id].rpartition('-')
-    puts "name: #{name}, suburb: #{suburb}"
-    @venue = Venue.find_by!(name: name.titleize.strip, suburb: suburb.titleize.strip)
-
     @rating = Rating.new
   end
 
-  def rate_venue
-    name, _, suburb = params[:id].rpartition('-')
-    @venue = Venue.find_by!(name: name.titleize.strip, suburb: suburb.titleize.strip)
-    @rating = Rating.new
+  private
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace('venue-details', partial: 'venues/submit_rating', locals: { venue: @venue, rating: @rating })
-      end
-      format.html { render partial: 'venues/submit_rating', locals: { venue: @venue, rating: @rating } }
-    end
+  def set_venue
+    puts "Received params[:id]: #{params[:id]}"
+    @venue = Venue.friendly.find(params[:id])
   end
 end

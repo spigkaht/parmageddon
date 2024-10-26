@@ -3,7 +3,8 @@
     <%= image_tag asset_url("PARMAGEDDON.png"), class: "w-2/3 max-w-xs sm:max-w-xs mx-3" %>
     <h2 class="text-base lg:text-lg md:pt-20 mx-3">Find a Parma that's right for you.</h2>
   </div>
-  <%= render "shared/map" %>
+  <div class="w-full h-full flex flex-col relative shadow-[0px_0px_10px_rgba(0,0,0,0.1)]" data-controller="google-maps" data-venue-details-target="mapDiv" data-google-maps-page-value="index">
+    <%= render "shared/map" %>
   <div class="flex flex-col justify-between items-center py-2 mb-6" data-controller="toggle-index-search">
     <h2 class="font-bold">Find a venue to rate!</h2>
     <%= form_with url: venues_path, method: :get do |form| %>

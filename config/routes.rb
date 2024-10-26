@@ -7,9 +7,6 @@ Rails.application.routes.draw do
   post "locations", to: "locations#find_nearby"
 
   resources :venues, only: [:index, :show] do
-    member do
-      get :rate_venue
-    end
     resources :ratings, only: [:new, :create]
   end
 end

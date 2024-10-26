@@ -87,17 +87,13 @@
         </div>
         <div data-venue-details-target="formButton">
           <div class="flex justify-end pt-1 pb-3">
-            <%= button_to "Rate venue's Parma", rate_venue_venue_path(@venue),
-                method: :get,
-                data: { turbo_frame: "venue-details" },
-                class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-base font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
+            <%= link_to "Rate venue's Parma", new_venue_rating_path(@venue), class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-base font-semibold hover:text-white py-1 px-2 mr-2 border border-saffron-mango-600 hover:border-transparent rounded" %>
           </div>
         </div>
       </div>
-      <div class="hidden" data-venue-details-target="formDiv">
-        <%= render "venues/submit_rating", venue: @venue, rating: @rating %>
-      </div>
     </div>
-    <%= render "shared/map" %>
+    <div class="w-full h-full flex flex-col relative shadow-[0px_0px_10px_rgba(0,0,0,0.1)]" data-controller="google-maps" data-venue-details-target="mapDiv" data-google-maps-page-value="venue">
+      <%= render "shared/map" %>
+    </div>
   </turbo-frame>
 </div>

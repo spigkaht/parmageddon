@@ -89,7 +89,7 @@ export default class extends Controller {
     })
       .then(response => response.json())
       .then(data => {
-        this.drawRectangle(data.bounds);
+        // this.drawRectangle(data.bounds);
         return this.plotMarkers(data.venues);
       })
       .catch(error => console.error('Error fetching venues:', error));
@@ -121,14 +121,8 @@ export default class extends Controller {
       const position = new google.maps.LatLng(parseFloat(venue.lat), parseFloat(venue.lng));
       const content = document.createElement("div");
 
-      const venueName = venue.name.toLowerCase().replace(/\s+/g, '-');
-      const venueSuburb = venue.suburb.toLowerCase().replace(/\s+/g, '-');
-      const venueUrl = `/venues/${venueName}-${venueSuburb}`;
-      const venueLink = "";
-
-      if (this.pageValue === "index") {
-        venueLink = `<a href="${venueUrl}" class="text-saffron-mango-600 hover:text-saffron-mango-800 font-bold text-base">View</a>`;
-      }
+      const venueUrl = `/venues/${venue.slug}`;
+      const venueLink = `<a href="${venueUrl}" class="text-saffron-mango-600 hover:text-saffron-mango-800 font-bold text-base">View</a>`;
 
       content.classList.add("flex", "flex-col", "justify-between", "items-center", "relative", "z-50")
       content.innerHTML = `
@@ -189,10 +183,6 @@ export default class extends Controller {
 
           this.currentMarker = marker;
         }
-
-        if (this.pageValue == "venue") {
-          Turbo.visit(venueUrl, { frame: "venue-details" });
-        }
       });
 
       this.bounds.extend(marker.position);
@@ -232,7 +222,7 @@ export default class extends Controller {
     const map = this.map;
 
     const adjustedNewCenter = {
-      lat: newCenter.lat() + 0.01,
+      lat: newCenter.lat() + 0.005,
       lng: newCenter.lng()
     };
 
@@ -256,27 +246,27 @@ export default class extends Controller {
     requestAnimationFrame(animate);
   }
 
-  drawRectangle(bounds) {
-    const { Rectangle } = google.maps;
+  // drawRectangle(bounds) {
+  //   const { Rectangle } = google.maps;
 
-    const rectangleBounds = {
-      north: bounds.high_latitude,
-      south: bounds.low_latitude,
-      east: bounds.high_longitude,
-      west: bounds.low_longitude,
-    };
+  //   const rectangleBounds = {
+  //     north: bounds.high_latitude,
+  //     south: bounds.low_latitude,
+  //     east: bounds.high_longitude,
+  //     west: bounds.low_longitude,
+  //   };
 
-    // Create and display the rectangle on the map
-    const rectangle = new google.maps.Rectangle({
-      bounds: rectangleBounds,
-      map: this.map,
-      strokeColor: "#FF0000",  // Border color
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: "#FF0000",
-      fillOpacity: 0.1,
-    });
-  }
+  //   // Create and display the rectangle on the map
+  //   const rectangle = new google.maps.Rectangle({
+  //     bounds: rectangleBounds,
+  //     map: this.map,
+  //     strokeColor: "#FF0000",  // Border color
+  //     strokeOpacity: 0.8,
+  //     strokeWeight: 2,
+  //     fillColor: "#FF0000",
+  //     fillOpacity: 0.1,
+  //   });
+  // }
 
   initDefaultMap() {
     const mapOptions = {

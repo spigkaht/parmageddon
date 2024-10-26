@@ -13,7 +13,7 @@ class LocationsController < ApplicationController
     uri = URI("https://places.googleapis.com/v1/places:searchText")
     api_key = ENV.fetch("GMAPS_PLACES_KEY")
 
-    venues = []
+    places = []
     page_token = nil
 
     loop do
@@ -53,22 +53,41 @@ class LocationsController < ApplicationController
         break
       end
 
-      puts "============ parsed response ==============="
-      puts parsed_response
-
-      venues.concat(parsed_response["places"]) if parsed_response["places"]
+      places.concat(parsed_response["places"]) if parsed_response["places"]
 
       page_token = parsed_response["nextPageToken"]
       break if page_token.nil?
-
-      sleep(1)
     end
 
-    venues.each do |place|
-      venue = Venue.find_by(places_id: place["id"])
+    places.each do |place|
+      puts "========= venue details =========="
+      puts place
 
-      if venue.nil?
-        venue = Venue.new(places_id: place["id"])
+      venue = Venue.find_or_initialize_by(places_id: place["id"])
+
+      venue.name = place.dig('displayName', 'text')
+      venue.hours = place.dig('currentOpeningHours', 'weekdayDescriptions')
+      venue.phone = place.dig('nationalPhoneNumber')
+      venue.website = place.dig('websiteUri')
+
+      address = ""
+      address_components = place["addressComponents"]
+      address_components.each do |component|
+        case component['types'].first
+        when "street_number"
+          address = address + component['shortText'] + " "
+        when "route", "locality"
+          address = address + component['shortText'] + ", "
+        when "administrative_area_level_1"
+          address = address + component['shortText']
+        when "postal_code"
+          venue.postcode = component['shortText']
+        end
+        venue.suburb = component['shortText'] if component['types'].first == "locality"
+      end
+      venue.address = address
+
+      if venue.new_record?
         venue.total_rating_average = 0.0
         venue.chicken_rating_average = 0.0
         venue.crumb_rating_average = 0.0
@@ -76,48 +95,22 @@ class LocationsController < ApplicationController
         venue.sides_rating_average = 0.0
         venue.venue_rating_average = 0.0
         venue.price_average = 0.0
-
-        new_venue = true if venue.new_record?
-        venue.save
       end
 
-      if new_venue
-        venue.name = place.dig('displayName', 'text')
-        venue.hours = place.dig('currentOpeningHours', 'weekdayDescriptions')
-        venue.phone = place.dig('nationalPhoneNumber')
-        venue.website = place.dig('websiteUri')
-
-        address = ""
-        address_components = place["addressComponents"]
-        address_components.each do |component|
-          case component['types'].first
-          when "street_number"
-            address = address + component['shortText'] + " "
-          when "route", "locality"
-            address = address + component['shortText'] + ", "
-          when "administrative_area_level_1"
-            address = address + component['shortText']
-          when "postal_code"
-            venue.postcode = component['shortText']
-          end
-          venue.suburb = component['shortText'] if component['types'].first == "locality"
-        end
-        venue.address = address
-
-        unless venue.save
-          puts "Error saving venue: #{venue.errors.full_messages.join(', ')}"
-          render json: { error: "Error saving venue" }, status: :unprocessable_entity
-          return
-        end
+      unless venue.save
+        puts "Error saving venue: #{venue.errors.full_messages.join(', ')}"
+        render json: { error: "Error saving venue" }, status: :unprocessable_entity
+        return
       end
     end
 
-    radius = 2.5
+    radius = 3
     @venues = Venue.near([latitude, longitude], radius)
 
     markers = @venues.map do |venue|
       {
         id: venue.id,
+        slug: venue.slug,
         lat: venue.latitude,
         lng: venue.longitude,
         name: venue.name,

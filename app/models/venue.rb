@@ -1,5 +1,10 @@
 class Venue < ApplicationRecord
+  extend FriendlyId
+  friendly_id :slug_candidates, use: :slugged
+
   has_many :ratings, dependent: :destroy
+
+  validates :name, :suburb, presence: true
 
   geocoded_by :address
   after_validation :geocode, if: :will_save_change_to_address?
@@ -15,7 +20,7 @@ class Venue < ApplicationRecord
     save
   end
 
-  def to_param
-    "#{name.parameterize}-#{suburb.parameterize}"
+  def slug_candidates
+    ["#{name} #{suburb}"]
   end
 end
