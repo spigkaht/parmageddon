@@ -21,6 +21,9 @@ class Venue < ApplicationRecord
   end
 
   def slug_candidates
-    ["#{name} #{suburb}"]
+    [
+      ["#{name} #{suburb}"],
+      ["#{name} #{suburb} #{id}"]
+    ]
   end
 end

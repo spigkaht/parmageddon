@@ -4,16 +4,16 @@ class VenuesController < ApplicationController
   before_action :set_venue, only: [:show]
 
   def index
-    if params[:venue]
+    if params[:select] == "venue"
       @venues = Venue.where("name ILIKE ?", "%#{params[:venue]}%")
-    elsif params[:location]
-      @venues = Venue.where("address ILIKE ?", "%#{params[:location]}%")
+    elsif params[:select] == "location"
+      @venues = Venue.where("suburb ILIKE :location OR postcode ILIKE :location", location: "%#{params[:location]}%")
     else
       @venues = Venue.all
     end
 
-    puts "============ VENUES (count: #{@venues.count}) =============="
-    puts @venues
+    # puts "============ VENUES (count: #{@venues.count}) =============="
+    # puts @venues
   end
 
   def show
@@ -23,7 +23,7 @@ class VenuesController < ApplicationController
   private
 
   def set_venue
-    puts "Received params[:id]: #{params[:id]}"
+    # puts "Received params[:id]: #{params[:id]}"
     @venue = Venue.friendly.find(params[:id])
   end
 end

@@ -7,7 +7,7 @@ class LocationsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:find_nearby]
 
   def find_nearby
-    puts "FIND NEARBY METHOD RUNNING"
+    # puts "FIND NEARBY METHOD RUNNING"
 
     latitude = params[:latitude].to_f
     longitude = params[:longitude].to_f
@@ -48,34 +48,34 @@ class LocationsController < ApplicationController
       })
 
       request.body = request_body.to_json
-      puts "==========REQUEST BODY =========="
-      puts request.body
-      
+      # puts "==========REQUEST BODY =========="
+      # puts request.body
+
       response = http.request(request)
 
-      if response.is_a?(Net::HTTPSuccess)
-        puts "Success! Status code: #{response.code}"
-      else
-        puts "Request failed with status code: #{response.code}"
-      end
+      # if response.is_a?(Net::HTTPSuccess)
+      #   puts "Success! Status code: #{response.code}"
+      # else
+      #   puts "Request failed with status code: #{response.code}"
+      # end
 
-      # Response body
-      puts "Response body: #{response.body}"
+      # # Response body
+      # puts "Response body: #{response.body}"
 
-      begin
-        parsed_body = JSON.parse(response.body)
-        puts "Parsed response: #{parsed_body}"
-      rescue JSON::ParserError
-        puts "Response is not valid JSON"
-      end
+      # begin
+      #   parsed_body = JSON.parse(response.body)
+      #   puts "Parsed response: #{parsed_body}"
+      # rescue JSON::ParserError
+      #   puts "Response is not valid JSON"
+      # end
 
-      # Headers
-      response.each_header do |header, value|
-        puts "#{header}: #{value}"
-      end
+      # # Headers
+      # response.each_header do |header, value|
+      #   puts "#{header}: #{value}"
+      # end
 
-      puts "========= RESPONSE ============"
-      puts response.body
+      # puts "========= RESPONSE ============"
+      # puts response.body
 
       parsed_response = JSON.parse(response.body) rescue nil
       if parsed_response.nil?
@@ -83,8 +83,8 @@ class LocationsController < ApplicationController
         break
       end
 
-      puts "======== PARSED RESPONSE ========"
-      puts parsed_response
+      # puts "======== PARSED RESPONSE ========"
+      # puts parsed_response
 
       places.concat(parsed_response["places"]) if parsed_response["places"]
 
@@ -93,8 +93,8 @@ class LocationsController < ApplicationController
     end
 
     places.each do |place|
-      puts "========= venue details =========="
-      puts place
+      # puts "========= venue details =========="
+      # puts place
 
       venue = Venue.find_or_initialize_by(places_id: place["id"])
 

@@ -15,13 +15,16 @@
       </div>
     <% end %>
     <%= form_with url: venues_path, method: :get, local: true, data: { action: "submit->fetch-nearby-venues#search" } do |form| %>
-      <div class="hidden justify-center items-center mb-4" data-toggle-venue-search-target="locationInput">
-        <%= form.text_field :location, placeholder: "Enter location (suburb, postcode, etc.)",
+      <div class="hidden justify-center items-center mb-2" data-toggle-venue-search-target="locationInput">
+        <%= form.text_field :location, placeholder: "Enter suburb or postcode, etc",
           class: "block w-60 px-2 py-1 text-sm text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md",
           data: { fetch_nearby_venues_target: "locationInput" } %>
         <%= form.submit "GO", class: "transition ease-in-out duration-300 text-white bg-saffron-mango-600 hover:bg-saffron-mango-800 focus:ring-4 focus:ring-saffron-mango-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
       </div>
     <% end %>
+    <div class="hidden justify-center mb-2" data-toggle-venue-search-target="mia">
+      <p class="text-xs text-saffron-mango-900"><em>Can't find what you're looking for? Try searching on the <%= link_to "map", root_path, class: "text-saffron-mango-700 underline" %></em></p>
+    </div>
   </div>
   <div class="relative shadow-md overflow-x-auto rounded-sm">
     <table class="w-full text-sm text-left text-saffron-mango-600" data-controller="table-sort">
