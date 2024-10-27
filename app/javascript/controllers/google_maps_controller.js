@@ -139,7 +139,7 @@ export default class extends Controller {
       const position = new google.maps.LatLng(parseFloat(venue.lat), parseFloat(venue.lng));
       const content = document.createElement("div");
 
-      const venueUrl = `/venues/${venue.slug}`;
+      const venueUrl = `/venues/${venue.slug}?latitude=${venue.lat}&longitude=${venue.lng}`;
       const venueLink = `<a href="${venueUrl}" class="text-saffron-mango-700 hover:text-saffron-mango-900 font-bold text-base">View</a>`;
 
       content.classList.add("flex", "flex-col", "justify-between", "items-center", "relative", "z-50")

@@ -3,7 +3,7 @@
     <div class="flex items-center py-4">
       <h1 class="text-2xl font-semibold">Rate <%= @venue.name %></h1>
     </div>
-    <table class="table-fixed items-center w-2/3">
+    <table class="table-fixed items-center w-3/4">
       <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2">
         <td class="w-20"><%= form.label :chicken_rating, "Chicken", class: "font-semibold mr-2" %></td>
         <td class="hidden"><%= form.hidden_field :chicken_rating, data: { ratings_target: "ratingInput" } %></td>
