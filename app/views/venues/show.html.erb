@@ -92,7 +92,14 @@
         </div>
       </div>
     </div>
-    <div class="w-full h-full flex flex-col relative shadow-[0px_0px_10px_rgba(0,0,0,0.1)]" data-controller="google-maps" data-venue-details-target="mapDiv" data-google-maps-page-value="venue">
+    <div class="w-full h-full flex flex-col relative shadow-[0px_0px_10px_rgba(0,0,0,0.1)]"
+      data-controller="google-maps"
+      data-venue-details-target="mapDiv"
+      data-google-maps-page-value="venue"
+      data-google-maps-lat-value="<%= @venue.latitude %>"
+      data-google-maps-lng-value="<%= @venue.longitude %>"
+      data-google-maps-initial-load-value="true"
+      data-google-maps-marker-clicked-value="false">
       <%= render "shared/map" %>
     </div>
   </turbo-frame>

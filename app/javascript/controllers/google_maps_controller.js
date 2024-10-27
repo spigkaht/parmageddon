@@ -3,12 +3,28 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = ["mapDiv", "loaderDiv"];
   static values = {
-    page: String
+    page: String,
+    lat: Number,
+    lng: Number,
+    initialLoad: Boolean,
+    markerClicked: Boolean
   }
-  bounds = null;
 
   connect() {
-    this.checkForCoordinatesInParams();
+    if ((this.initialLoadValue || this.markerClickedValue) && this.hasLatValue && this.hasLngValue) {
+      this.runAfterAsync(this.initMapOnce(this.latValue, this.lngValue), this.getVenues(this.latValue, this.lngValue));
+      this.initialLoadValue = false;
+    } else {
+      this.checkForCoordinatesInParams();
+    }
+  }
+
+  initMapOnce(lat, lng) {
+    if (this.map) {
+      console.log("Map is already initialized");
+      return;
+    }
+    this.initMap(lat, lng);
   }
 
   checkForCoordinatesInParams() {
@@ -17,13 +33,15 @@ export default class extends Controller {
     const longitude = parseFloat(urlParams.get("longitude"));
 
     if (!isNaN(latitude) && !isNaN(longitude)) {
-      this.runAfterAsync(this.initMap(latitude, longitude), this.getVenues(latitude, longitude));
+      this.runAfterAsync(this.initMapOnce(latitude, longitude), this.getVenues(latitude, longitude));
     } else {
       this.getUserLocation();
     }
   }
 
   getUserLocation() {
+    if (this.markerClickedValue) return;
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.success.bind(this), this.error.bind(this), {
         enableHighAccuracy: true,
@@ -40,7 +58,7 @@ export default class extends Controller {
     const latitude = position.coords.latitude || -37.8136;
     const longitude = position.coords.longitude || 144.9631;
 
-    this.runAfterAsync(this.initMap(latitude, longitude), this.getVenues(latitude, longitude));
+    this.runAfterAsync(this.initMapOnce(latitude, longitude), this.getVenues(latitude, longitude));
   }
 
   error() {
@@ -51,11 +69,6 @@ export default class extends Controller {
   async initMap(lat, lng) {
     if (typeof google === "undefined" || typeof google.maps === "undefined") {
       console.error("Google Maps API is not loaded yet.");
-      return;
-    }
-
-    if (this.map) {
-      console.log("Map is already initialized");
       return;
     }
 
@@ -89,8 +102,8 @@ export default class extends Controller {
     })
       .then(response => response.json())
       .then(data => {
-        // this.drawRectangle(data.bounds);
-        return this.plotMarkers(data.venues);
+        // Process the venues for plotting markers
+        this.plotMarkers(data.venues);
       })
       .catch(error => console.error('Error fetching venues:', error));
   }
@@ -122,14 +135,14 @@ export default class extends Controller {
       const content = document.createElement("div");
 
       const venueUrl = `/venues/${venue.slug}`;
-      const venueLink = `<a href="${venueUrl}" class="text-saffron-mango-600 hover:text-saffron-mango-800 font-bold text-base">View</a>`;
+      const venueLink = `<a href="${venueUrl}" class="text-saffron-mango-700 hover:text-saffron-mango-900 font-bold text-base">View</a>`;
 
       content.classList.add("flex", "flex-col", "justify-between", "items-center", "relative", "z-50")
       content.innerHTML = `
-      <div class="hidden flex-col bg-saffron-mango-400 text-saffron-mango-950 opacity-90 rounded-md border border-saffron-mango-950 py-0.5 px-1.5" id="infoDiv">
+      <div class="hidden flex-col min-w-32 bg-saffron-mango-400 text-saffron-mango-950 opacity-90 rounded-md border border-saffron-mango-950 py-0.5 px-1.5" id="infoDiv">
         <p class="font-bold text-base">${venue.name}</p>
         <div class="flex justify-between items-center">
-          <div class="flex">
+          <div class="flex items-center">
             <span class="material-symbols-sharp !font-bold !text-xl mr-1" title=${venue.name}>
             star
             </span>
@@ -152,7 +165,7 @@ export default class extends Controller {
       });
 
       marker.addListener("click", () => {
-        this.map.setZoom(13);
+        this.map.setZoom(14);
 
         const markerImg = marker.content.querySelector(".marker-img");
         const infoDiv = marker.content.querySelector("#infoDiv");
@@ -165,6 +178,8 @@ export default class extends Controller {
           marker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
           this.currentMarker = null;
         } else {
+          this.markerClickedValue = true;
+
           if (this.currentMarker) {
             const previousMarkerImg = this.currentMarker.content.querySelector(".marker-img");
             const previousInfoDiv = this.currentMarker.content.querySelector("#infoDiv");
@@ -174,6 +189,7 @@ export default class extends Controller {
             previousInfoDiv.classList.remove("flex");
             this.currentMarker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
           }
+
           this.animateMapCenter(position);
           markerImg.style.width = "50px";
           markerImg.style.height = "50px";
@@ -211,6 +227,9 @@ export default class extends Controller {
   }
 
   centerMap() {
+    this.initialLoadValue = false;
+    this.markerClickedValue = false;
+
     const center = this.map.getCenter();
     const lat = center.lat();
     const lng = center.lng();
@@ -222,7 +241,7 @@ export default class extends Controller {
     const map = this.map;
 
     const adjustedNewCenter = {
-      lat: newCenter.lat() + 0.005,
+      lat: newCenter.lat() + 0.003,
       lng: newCenter.lng()
     };
 
@@ -246,28 +265,6 @@ export default class extends Controller {
     requestAnimationFrame(animate);
   }
 
-  // drawRectangle(bounds) {
-  //   const { Rectangle } = google.maps;
-
-  //   const rectangleBounds = {
-  //     north: bounds.high_latitude,
-  //     south: bounds.low_latitude,
-  //     east: bounds.high_longitude,
-  //     west: bounds.low_longitude,
-  //   };
-
-  //   // Create and display the rectangle on the map
-  //   const rectangle = new google.maps.Rectangle({
-  //     bounds: rectangleBounds,
-  //     map: this.map,
-  //     strokeColor: "#FF0000",  // Border color
-  //     strokeOpacity: 0.8,
-  //     strokeWeight: 2,
-  //     fillColor: "#FF0000",
-  //     fillOpacity: 0.1,
-  //   });
-  // }
-
   initDefaultMap() {
     const mapOptions = {
       center: { lat: -37.8136, lng: 144.9631 },
@@ -276,7 +273,7 @@ export default class extends Controller {
       mapId: "8920b6736ae8305a",
     };
 
-    this.map = new Map(this.mapDivTarget, mapOptions);
+    this.map = new google.maps.Map(this.mapDivTarget, mapOptions);
   }
 
   disconnect() {

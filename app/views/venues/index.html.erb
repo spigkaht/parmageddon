@@ -1,41 +1,54 @@
-<div class="flex flex-col w-full bg-saffron-mango-50" data-controller="toggle-venue-search">
-  <div class="flex justify-between w-full px-4 my-4">
-    <%= button_tag "Search for a venue", type: "button", class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-saffron-mango-600 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleVenueSearch" } %>
-    <%= button_tag "Search by location", type: "button", class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-saffron-mango-600 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleLocationSearch" } %>
-    <%= link_to "Show all venues", venues_path, class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-xs sm:text-sm text-center font-semibold hover:text-white py-1 px-2 mx-1 border border-saffron-mango-600 hover:border-transparent rounded" %>
+<div data-controller="fetch-nearby-venues" data-fetch-nearby-venues-apikey-value=<%= ENV.fetch('GMAPS_GEO_API_KEY') %>>
+  <div data-fetch-nearby-venues-target="spinner" style="display: none;" class="loader absolute inset-0 flex items-center justify-center z-50">
+    <div class="w-12 h-12 border-4 border-t-4 border-t-blue-500 border-gray-300 rounded-full animate-spin"></div>
   </div>
-  <%= form_with url: venues_path, method: :get do |form| %>
-    <div class="hidden justify-center items-center mb-4" data-toggle-venue-search-target="venueInput">
-      <%= form.text_field :venue, placeholder: "Enter venue name", class: "block w-60 px-2 py-1 text-sm text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md" %>
-      <%= form.submit "GO", class: "transition ease-in-out duration-300 text-white bg-saffron-mango-600 hover:bg-saffron-mango-800 focus:ring-4 focus:ring-saffron-mango-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
+  <div class="flex flex-col w-full bg-saffron-mango-50" data-controller="toggle-venue-search" data-fetch-nearby-venues-target="searchBar">
+    <div class="flex justify-between w-full px-4 my-4">
+      <%= button_tag "Search for a venue", type: "button", class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-saffron-mango-600 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleVenueSearch" } %>
+      <%= button_tag "Search by location", type: "button", class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-xs sm:text-sm font-semibold hover:text-white py-1 px-2 mx-1 border border-saffron-mango-600 hover:border-transparent rounded", data: { action: "click->toggle-venue-search#toggleLocationSearch" } %>
+      <%= link_to "Show all venues", venues_path, class: "transition ease-in-out duration-300 bg-transparent hover:bg-saffron-mango-600 text-saffron-mango-700 text-xs sm:text-sm text-center font-semibold hover:text-white py-1 px-2 mx-1 border border-saffron-mango-600 hover:border-transparent rounded" %>
     </div>
-  <% end %>
-  <%= form_with url: venues_path, method: :get do |form| %>
-    <div class="hidden justify-center items-center mb-4" data-toggle-venue-search-target="locationInput">
-      <%= form.text_field :location, placeholder: "Enter location (suburb etc)", class: "block w-60 px-2 py-1 text-sm text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md" %>
-      <%= form.submit "GO", class: "transition ease-in-out duration-300 text-white bg-saffron-mango-600 hover:bg-saffron-mango-800 focus:ring-4 focus:ring-saffron-mango-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
-    </div>
-  <% end %>
-</div>
-<div class="relative shadow-md overflow-x-auto rounded-sm">
-  <table class="w-full text-sm text-left text-saffron-mango-600" data-controller="table-sort">
-    <thead class="text-xs text-saffron-mango-700 uppercase bg-saffron-mango-50">
-      <tr>
-        <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="venue">Venue<span class="ml-2"></span></th>
-        <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="location">Location<span class="ml-2"></span></th>
-        <th scope="col" class="cursor-pointer text-xs text-right py-1.5" data-action="click->table-sort#sort" data-column="price">Price<span class="ml-2"></span></th>
-        <th scope="col" class="cursor-pointer text-xs text-right py-1.5" data-action="click->table-sort#sort" data-column="rating">Rating<span class="ml-2"></span></th>
-      </tr>
-    </thead>
-    <tbody data-table-sort-target="tableBody">
-      <% @venues.each do |venue| %>
-        <tr class="odd:bg-white even:bg-saffron-mango-50 border-b">
-          <td scope="row" data-column="venue" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs"><%= link_to venue.name, venue_path(venue) %></td>
-          <td scope="row" data-column="location" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs"><%= venue.suburb %></td>
-          <td scope="row" data-column="price" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs text-right"><%= venue.price_average > 0 ? number_to_currency(venue.price_average) : "-" %></td>
-          <td scope="row" data-column="rating" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs text-right"><%= venue.total_rating_average %></td>
+    <%= form_with url: venues_path, method: :get do |form| %>
+      <div class="hidden justify-center items-center mb-4" data-toggle-venue-search-target="venueInput">
+        <%= form.text_field :venue, placeholder: "Enter venue name", class: "block w-60 px-2 py-1 text-sm text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md" %>
+        <%= form.submit "GO", class: "transition ease-in-out duration-300 text-white bg-saffron-mango-600 hover:bg-saffron-mango-800 focus:ring-4 focus:ring-saffron-mango-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
+      </div>
+    <% end %>
+    <%= form_with url: venues_path, method: :get, local: true, data: { action: "submit->fetch-nearby-venues#search" } do |form| %>
+      <div class="hidden justify-center items-center mb-4" data-toggle-venue-search-target="locationInput">
+        <%= form.text_field :location, placeholder: "Enter location (suburb, postcode, etc.)",
+          class: "block w-60 px-2 py-1 text-sm text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md",
+          data: { fetch_nearby_venues_target: "locationInput" } %>
+        <%= form.submit "GO", class: "transition ease-in-out duration-300 text-white bg-saffron-mango-600 hover:bg-saffron-mango-800 focus:ring-4 focus:ring-saffron-mango-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="relative shadow-md overflow-x-auto rounded-sm">
+    <table class="w-full text-sm text-left text-saffron-mango-600" data-controller="table-sort">
+      <thead class="text-xs text-saffron-mango-700 uppercase bg-saffron-mango-50">
+        <tr>
+          <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="venue">Venue<span class="ml-2"></span></th>
+          <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="location">Location<span class="ml-2"></span></th>
+          <th scope="col" class="cursor-pointer text-xs text-right py-1.5" data-action="click->table-sort#sort" data-column="price">Price<span class="ml-2"></span></th>
+          <th scope="col" class="cursor-pointer text-xs text-right py-1.5" data-action="click->table-sort#sort" data-column="rating">Rating<span class="ml-2"></span></th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody data-table-sort-target="tableBody" data-fetch-nearby-venues-target="tableBody">
+        <% if @venues.any? %>
+          <% @venues.each do |venue| %>
+            <tr class="odd:bg-white even:bg-saffron-mango-50 border-b">
+              <td scope="row" data-column="venue" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs"><%= link_to venue.name, venue_path(venue) %></td>
+              <td scope="row" data-column="location" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs"><%= venue.suburb %></td>
+              <td scope="row" data-column="price" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs text-right"><%= venue.price_average > 0 ? number_to_currency(venue.price_average) : "-" %></td>
+              <td scope="row" data-column="rating" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs text-right"><%= venue.total_rating_average %></td>
+            </tr>
+          <% end %>
+        <% else%>
+          <tr class="odd:bg-white even:bg-saffron-mango-50 border-b">
+            <td colspan="4" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs">No venues match your search.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

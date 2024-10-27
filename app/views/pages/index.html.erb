@@ -5,6 +5,7 @@
   </div>
   <div class="w-full h-full flex flex-col relative shadow-[0px_0px_10px_rgba(0,0,0,0.1)]" data-controller="google-maps" data-venue-details-target="mapDiv" data-google-maps-page-value="index">
     <%= render "shared/map" %>
+  </div>
   <div class="flex flex-col justify-between items-center py-2 mb-6" data-controller="toggle-index-search">
     <h2 class="font-bold">Find a venue to rate!</h2>
     <%= form_with url: venues_path, method: :get do |form| %>

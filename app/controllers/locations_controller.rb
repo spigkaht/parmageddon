@@ -3,9 +3,12 @@ require "json"
 require "uri"
 
 class LocationsController < ApplicationController
+  include ActionView::Helpers::NumberHelper
   skip_before_action :verify_authenticity_token, only: [:find_nearby]
 
   def find_nearby
+    puts "FIND NEARBY METHOD RUNNING"
+
     latitude = params[:latitude].to_f
     longitude = params[:longitude].to_f
     longitude_variance = 2.5 / (111.32 * Math.cos(latitude * Math::PI / 180))
@@ -45,13 +48,43 @@ class LocationsController < ApplicationController
       })
 
       request.body = request_body.to_json
+      puts "==========REQUEST BODY =========="
+      puts request.body
+      
       response = http.request(request)
+
+      if response.is_a?(Net::HTTPSuccess)
+        puts "Success! Status code: #{response.code}"
+      else
+        puts "Request failed with status code: #{response.code}"
+      end
+
+      # Response body
+      puts "Response body: #{response.body}"
+
+      begin
+        parsed_body = JSON.parse(response.body)
+        puts "Parsed response: #{parsed_body}"
+      rescue JSON::ParserError
+        puts "Response is not valid JSON"
+      end
+
+      # Headers
+      response.each_header do |header, value|
+        puts "#{header}: #{value}"
+      end
+
+      puts "========= RESPONSE ============"
+      puts response.body
 
       parsed_response = JSON.parse(response.body) rescue nil
       if parsed_response.nil?
         puts "Error: Unable to parse response as JSON."
         break
       end
+
+      puts "======== PARSED RESPONSE ========"
+      puts parsed_response
 
       places.concat(parsed_response["places"]) if parsed_response["places"]
 
@@ -67,8 +100,8 @@ class LocationsController < ApplicationController
 
       venue.name = place.dig('displayName', 'text')
       venue.hours = place.dig('currentOpeningHours', 'weekdayDescriptions')
-      venue.phone = place.dig('nationalPhoneNumber')
-      venue.website = place.dig('websiteUri')
+      venue.phone = place['nationalPhoneNumber']
+      venue.website = place['websiteUri']
 
       address = ""
       address_components = place["addressComponents"]
@@ -115,7 +148,8 @@ class LocationsController < ApplicationController
         lng: venue.longitude,
         name: venue.name,
         suburb: venue.suburb,
-        rating: venue.total_rating_average
+        rating: venue.total_rating_average,
+        price: venue.price_average > 0 ? number_to_currency(venue.price_average) : nil
       }
     end
 

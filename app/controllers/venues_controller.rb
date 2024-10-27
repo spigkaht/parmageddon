@@ -11,6 +11,9 @@ class VenuesController < ApplicationController
     else
       @venues = Venue.all
     end
+
+    puts "============ VENUES (count: #{@venues.count}) =============="
+    puts @venues
   end
 
   def show
