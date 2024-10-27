@@ -11,9 +11,14 @@ export default class extends Controller {
   }
 
   connect() {
+    // Retrieve flags from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    this.initialLoadValue = urlParams.get("initialLoad") === "true";
+    this.markerClickedValue = urlParams.get("markerClicked") === "true";
+
+    // Run map setup based on initialLoad and markerClicked flags
     if ((this.initialLoadValue || this.markerClickedValue) && this.hasLatValue && this.hasLngValue) {
       this.runAfterAsync(this.initMapOnce(this.latValue, this.lngValue), this.getVenues(this.latValue, this.lngValue));
-      this.initialLoadValue = false;
     } else {
       this.checkForCoordinatesInParams();
     }
@@ -227,14 +232,24 @@ export default class extends Controller {
   }
 
   centerMap() {
+    // Set flags to false to prevent map from re-centering to venue coordinates
     this.initialLoadValue = false;
     this.markerClickedValue = false;
 
+    // Get the current map center coordinates
     const center = this.map.getCenter();
     const lat = center.lat();
     const lng = center.lng();
 
-    window.location.href = `?latitude=${lat}&longitude=${lng}`;
+    // Update the URL with the new center coordinates and flags
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set("latitude", lat);
+    newUrl.searchParams.set("longitude", lng);
+    newUrl.searchParams.set("initialLoad", this.initialLoadValue);
+    newUrl.searchParams.set("markerClicked", this.markerClickedValue);
+
+    // Reload the page with the updated URL
+    window.location.href = newUrl.toString();
   }
 
   animateMapCenter(newCenter) {

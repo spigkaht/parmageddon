@@ -47,6 +47,7 @@ export default class extends Controller {
       .catch(error => {
         console.error("Error fetching coordinates:", error);
         this.showNoVenuesMessage("Error fetching location coordinates.");
+        this.hideSpinner();
       });
   }
 
@@ -89,6 +90,7 @@ export default class extends Controller {
         this.tableBodyTarget.appendChild(row);
       });
     } else {
+      this.hideSpinner();
       this.showNoVenuesMessage("No nearby venues found.");
     }
   }

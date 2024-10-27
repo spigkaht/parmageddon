@@ -3,10 +3,10 @@
     <p><%= venue.address %></p>
     <p><%= venue.phone %></p>
     <%= link_to "#{venue.website}", venue.website, class: "transition ease-in-out duration-300 text-saffron-mango-800 hover:text-saffron-mango-950" %>
-    <h4 class="mt-3">Opening hours</h4>
+    <h4 class="mt-3 text-xs">Opening hours</h4>
     <% if venue.hours %>
       <% JSON.parse(venue.hours).each do |hours| %>
-        <p><%= hours %></p>
+        <p class="text-xs"><%= hours %></p>
       <% end %>
     <% else %>
       <p>Not provided</p>
