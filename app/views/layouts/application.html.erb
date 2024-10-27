@@ -28,8 +28,13 @@
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@24,400,0,0" />
   </head>
-  <body class="bg-saffron-mango-50 relative">
-    <main class="flex flex-col flex-grow w-full h-dvh relative">
+  <body class="bg-saffron-mango-50 relative" data-controller="viewport-check">
+     <div data-viewport-check-target="unsupportedMessage" class="unsupported-message hidden">
+      <p class="text-xl text-red-600 bg-red-50 p-4 rounded-md text-center">
+        Your device is not supported. Please use a device with a larger screen.
+      </p>
+    </div>
+    <main class="flex flex-col flex-grow w-full h-dvh relative" data-viewport-check-target="content" class="main-content">
       <%= render "shared/header" %>
       <%= render "shared/flashes" %>
       <%= yield %>

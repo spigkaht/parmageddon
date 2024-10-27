@@ -1,6 +1,6 @@
 <div class="flex flex-col flex-grow w-full h-full" data-controller="venue-details">
   <turbo-frame id="venue-details" data-turbo-action="replace" data-turbo="false" class="flex flex-col h-full">
-    <div class="min-h-[60%] flex flex-col font-['Open_Sans'] text-saffron-mango-900" style="background-image: url(<%= image_path "parma-trans.png" %>);background-repeat:no-repeat;background-size:cover 80%;">
+    <div class="min-h-[70%] flex flex-col font-['Open_Sans'] text-saffron-mango-900" style="background-image: url(<%= image_path "parma-trans.png" %>);background-repeat:no-repeat;background-size:cover 80%;">
       <div class="px-2 py-2 whitespace-nowrap" data-controller="text-shrink">
         <h1 class="text-2xl font-semibold" data-text-shrink-target="text"><%= @venue.name %></h1>
         <div class="w-1/4 h-1 py-1 ml-2 border-b-2 border-saffron-mango-950"></div>
