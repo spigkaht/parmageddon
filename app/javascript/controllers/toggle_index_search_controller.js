@@ -14,4 +14,9 @@ export default class extends Controller {
     this.locationTarget.classList.remove("hidden");
     this.venueTarget.classList.add("hidden");
   }
+
+  showAll() {
+    this.locationTarget.classList.add("hidden");
+    this.venueTarget.classList.add("hidden");
+  }
 }

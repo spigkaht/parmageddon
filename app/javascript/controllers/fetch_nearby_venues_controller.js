@@ -1,32 +1,37 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["locationInput", "tableBody", "noVenuesMessage", "spinner", "searchBar"];
+  static targets = ["venueInput", "locationInput", "allInput", "tableBody", "noVenuesMessage", "spinner", "mainDiv"];
 
   static values = {
     apikey: String
   }
 
   search(event) {
-    event.preventDefault();
+    console.log(this.venueInputTarget.checked);
+    if (this.venueInputTarget.value || this.allInputTarget.value) {
+      console.log("returning");
+      return;
+    }
+
+    event.preventDefault(); // Prevents the default form submission
+
     const location = this.locationInputTarget.value.trim();
     if (location) {
       this.showSpinner();
       this.getCoordinates(location);
-    } else {
-      this.showNoVenuesMessage("Please enter a location.");
     }
   }
 
   showSpinner() {
     this.spinnerTarget.style.display = "flex";
-    this.searchBarTarget.classList.add("filter", "blur-sm");
+    this.mainDivTarget.classList.add("filter", "blur-sm");
 
   }
 
   hideSpinner() {
     this.spinnerTarget.style.display = "none";
-    this.searchBarTarget.classList.remove("filter", "blur-sm");
+    this.mainDivTarget.classList.remove("filter", "blur-sm");
 
   }
 
@@ -42,6 +47,7 @@ export default class extends Controller {
           this.fetchNearbyVenues(lat, lng);
         } else {
           this.showNoVenuesMessage("Location not found.");
+          this.hideSpinner();
         }
       })
       .catch(error => {
@@ -86,7 +92,8 @@ export default class extends Controller {
           <td scope="row" data-column="location" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs">${venue.suburb}</td>
           <td scope="row" data-column="price" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs text-right">${venue.price || "-"}</td>
           <td scope="row" data-column="rating" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs text-right">${venue.rating}</td>
-        `;
+          `
+        ;
         this.tableBodyTarget.appendChild(row);
       });
     } else {
@@ -103,7 +110,8 @@ export default class extends Controller {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td class="px-3 py-2 font-medium text-saffron-mango-900 text-xs" colspan="4">${message}</td>
-    `;
+      `
+    ;
     this.tableBodyTarget.appendChild(row);
   }
 }
