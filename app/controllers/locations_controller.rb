@@ -96,38 +96,36 @@ class LocationsController < ApplicationController
       # puts "========= venue details =========="
       # puts place
 
-      venue = Venue.find_or_initialize_by(places_id: place["id"])
+      venue = Venue.find_or_create_by(places_id: place["id"]) do |v|
+        v.name = place.dig('displayName', 'text')
+        v.hours = place.dig('currentOpeningHours', 'weekdayDescriptions')
+        v.phone = place['nationalPhoneNumber']
+        v.website = place['websiteUri']
 
-      venue.name = place.dig('displayName', 'text')
-      venue.hours = place.dig('currentOpeningHours', 'weekdayDescriptions')
-      venue.phone = place['nationalPhoneNumber']
-      venue.website = place['websiteUri']
-
-      address = ""
-      address_components = place["addressComponents"]
-      address_components.each do |component|
-        case component['types'].first
-        when "street_number"
-          address = address + component['shortText'] + " "
-        when "route", "locality"
-          address = address + component['shortText'] + ", "
-        when "administrative_area_level_1"
-          address = address + component['shortText']
-        when "postal_code"
-          venue.postcode = component['shortText']
+        address = ""
+        address_components = place["addressComponents"]
+        address_components.each do |component|
+          case component['types'].first
+          when "street_number"
+            address = address + component['shortText'] + " "
+          when "route", "locality"
+            address = address + component['shortText'] + ", "
+          when "administrative_area_level_1"
+            address = address + component['shortText']
+          when "postal_code"
+            v.postcode = component['shortText']
+          end
+          v.suburb = component['shortText'] if component['types'].first == "locality"
         end
-        venue.suburb = component['shortText'] if component['types'].first == "locality"
-      end
-      venue.address = address
+        v.address = address
 
-      if venue.new_record?
-        venue.total_rating_average = 0.0
-        venue.chicken_rating_average = 0.0
-        venue.crumb_rating_average = 0.0
-        venue.topping_rating_average = 0.0
-        venue.sides_rating_average = 0.0
-        venue.venue_rating_average = 0.0
-        venue.price_average = 0.0
+        v.total_rating_average = 0.0
+        v.chicken_rating_average = 0.0
+        v.crumb_rating_average = 0.0
+        v.topping_rating_average = 0.0
+        v.sides_rating_average = 0.0
+        v.venue_rating_average = 0.0
+        v.price_average = 0.0
       end
 
       unless venue.save
