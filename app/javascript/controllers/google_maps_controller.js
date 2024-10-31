@@ -11,12 +11,27 @@ export default class extends Controller {
   }
 
   connect() {
-    // Retrieve flags from URL parameters
+    // Check if the map is already initialized or if the mapDiv is hidden
+    if (window.mapInitialized || this.isHidden(this.mapDivTarget)) {
+      return;
+    }
+
+    // Set the global flag to indicate the map is initialized
+    window.mapInitialized = true;
+
+    // Initialize map as usual
+    this.initializeMap();
+  }
+
+  isHidden(element) {
+    return element.offsetParent === null || window.getComputedStyle(element).visibility === "hidden";
+  }
+
+  initializeMap() {
     const urlParams = new URLSearchParams(window.location.search);
     this.initialLoadValue = urlParams.get("initialLoad") === "true";
     this.markerClickedValue = urlParams.get("markerClicked") === "true";
 
-    // Run map setup based on initialLoad and markerClicked flags
     if ((this.initialLoadValue || this.markerClickedValue) && this.hasLatValue && this.hasLngValue) {
       this.runAfterAsync(this.initMapOnce(this.latValue, this.lngValue), this.getVenues(this.latValue, this.lngValue));
     } else {
@@ -30,6 +45,31 @@ export default class extends Controller {
       return;
     }
     this.initMap(lat, lng);
+  }
+
+  async initMap(lat, lng) {
+    if (typeof google === "undefined" || typeof google.maps === "undefined") {
+      console.error("Google Maps API is not loaded yet.");
+      return;
+    }
+
+    if (!this.mapDivTarget || this.mapDivTarget.offsetHeight === 0) {
+      console.error("Map div is not ready or has no height.");
+      return;
+    }
+
+    const { Map } = await google.maps.importLibrary("maps");
+    await google.maps.importLibrary("geometry");
+    this.bounds = new google.maps.LatLngBounds();
+
+    const mapOptions = {
+      center: { lat: lat, lng: lng },
+      zoom: 11,
+      disableDefaultUI: true,
+      mapId: "8920b6736ae8305a",
+    };
+
+    this.map = new Map(this.mapDivTarget, mapOptions);
   }
 
   checkForCoordinatesInParams() {
@@ -294,7 +334,17 @@ export default class extends Controller {
   disconnect() {
     if (this.map && !document.body.contains(this.mapDivTarget)) {
       google.maps.event.clearInstanceListeners(this.map);
+
+      // Clear all markers
+      if (this.markers) {
+        this.markers.forEach(marker => marker.setMap(null));
+        this.markers = [];
+      }
+
       this.map = null;
+      this.initialLoadValue = false;
+      this.markerClickedValue = false;
+      console.log("Map and markers cleared in disconnect()");
     }
   }
 }

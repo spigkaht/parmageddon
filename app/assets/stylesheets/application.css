@@ -13,3 +13,7 @@
  *= require_tree .
  *= require_self
  */
+
+.custom-select {
+  font-size: 1.4rem; /* Adjust as needed */
+}

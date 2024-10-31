@@ -1,60 +1,60 @@
 <%= form_with model: @rating, url: venue_ratings_path(@venue), method: :post, data: { controller: "ratings", action: "submit->ratings#validate" } do |form| %>
-  <div class="flex flex-col items-center text-saffron-mango-900">
-    <div class="flex items-center py-4">
-      <h1 class="text-2xl font-semibold">Rate <%= @venue.name %></h1>
+  <div class="flex flex-col items-center text-saffron-mango-900 w-full">
+    <div class="flex items-center py-4 sm:py-6 lg:py-8">
+      <h1 class="text-2xl md:text-4xl font-semibold">Rate <%= @venue.name %></h1>
     </div>
-    <table class="table-fixed items-center w-3/4">
-      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2">
-        <td class="w-20"><%= form.label :chicken_rating, "Chicken", class: "font-semibold mr-2" %></td>
+    <table class="table-fixed items-center w-3/4 sm:w-1/2 lg:w-1/3 md:my-3">
+      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2 lg:my-3">
+        <td class="w-20"><%= form.label :chicken_rating, "Chicken", class: "lg:text-xl font-semibold mr-2" %></td>
         <td class="hidden"><%= form.hidden_field :chicken_rating, data: { ratings_target: "ratingInput" } %></td>
         <td class="flex justify-end">
           <% [1, 2, 3, 4, 5].each do |value| %>
-            <td class="w-10"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
+            <td class="w-10 lg:w-14"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white px-3 py-1 lg:px-4 lg:py-2 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
           <% end %>
         </td>
       </tr>
-      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2">
-        <td class="w-20"><%= form.label :crumb_rating, "Crumb", class: "font-semibold" %></td>
+      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2 lg:my-3">
+        <td class="w-20"><%= form.label :crumb_rating, "Crumb", class: "lg:text-xl font-semibold" %></td>
         <td class="hidden"><%= form.hidden_field :crumb_rating, data: { ratings_target: "ratingInput" } %></td>
         <td class="flex justify-between">
           <% [1, 2, 3, 4, 5].each do |value| %>
-            <td class="w-10"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
+            <td class="w-10 lg:w-14"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white px-3 py-1 lg:px-4 lg:py-2 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
           <% end %>
         </td>
       </tr>
-      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2">
-        <td class="w-20"><%= form.label :topping_rating, "Topping", class: "font-semibold" %></td>
+      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2 lg:my-3">
+        <td class="w-20"><%= form.label :topping_rating, "Topping", class: "lg:text-xl font-semibold" %></td>
         <td class="hidden"><%= form.hidden_field :topping_rating, data: { ratings_target: "ratingInput" } %></td>
         <td class="flex justify-between">
           <% [1, 2, 3, 4, 5].each do |value| %>
-            <td class="w-10"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
+            <td class="w-10 lg:w-14"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white px-3 py-1 lg:px-4 lg:py-2 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
           <% end %>
         </td>
       </tr>
-      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2">
-        <td class="w-20"><%= form.label :sides_rating, "Sides", class: "font-semibold" %></td>
+      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2 lg:my-3">
+        <td class="w-20"><%= form.label :sides_rating, "Sides", class: "lg:text-xl font-semibold" %></td>
         <td class="hidden"><%= form.hidden_field :sides_rating, data: { ratings_target: "ratingInput" } %></td>
         <td class="flex justify-between">
           <% [1, 2, 3, 4, 5].each do |value| %>
-            <td class="w-10"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
+            <td class="w-10 lg:w-14"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white px-3 py-1 lg:px-4 lg:py-2 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
           <% end %>
         </td>
       </tr>
-      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2">
-        <td class="w-20"><%= form.label :venue_rating, "Venue", class: "font-semibold" %></td>
+      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2 lg:my-3">
+        <td class="w-20"><%= form.label :venue_rating, "Venue", class: "lg:text-xl font-semibold" %></td>
         <td class="hidden"><%= form.hidden_field :venue_rating, data: { ratings_target: "ratingInput" } %></td>
         <td class="flex justify-between">
           <% [1, 2, 3, 4, 5].each do |value| %>
-            <td class="w-10"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
+            <td class="w-10 lg:w-14"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white px-3 py-1 lg:px-4 lg:py-2 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
           <% end %>
         </td>
       </tr>
-      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2">
-        <td class="w-20"><%= form.label :total_rating, "Overall", class: "font-bold" %></td>
+      <tr data-ratings-target="ratingGroup" class="rating-group flex justify-between items-center w-full my-2 lg:my-3">
+        <td class="w-20"><%= form.label :total_rating, "Overall", class: "lg:text-xl font-bold" %></td>
         <td class="hidden"><%= form.hidden_field :total_rating, data: { ratings_target: "ratingInput" } %></td>
         <td class="flex justify-between">
           <% [1, 2, 3, 4, 5].each do |value| %>
-            <td class="w-10"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-3 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
+            <td class="w-10 lg:w-14"><%= button_tag value.to_s, type: "button", class: "rating-button transition ease-in-out duration-300 w-full bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white px-3 py-1 lg:px-4 lg:py-2 mr-2 border border-saffron-mango-500 hover:border-transparent rounded", data: { action: "click->ratings#setRating", value: value } %></td>
           <% end %>
         </td>
       </tr>
@@ -68,8 +68,8 @@
       <%= form.text_area :comment, size: "70x3", class: "block w-3/4 px-2 py-1 text-lg text-left bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md" %>
     </div>
     <div class="flex items-center">
-      <%= link_to "Cancel", venue_path(@venue), class: "transition ease-in-out duration-300 bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-3 my-4 mx-2 border border-saffron-mango-500 hover:border-transparent rounded" %>
-      <%= form.submit "Submit rating", class: "transition ease-in-out duration-300 bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-lg font-semibold hover:text-white py-1 px-3 my-4 mx-2 border border-saffron-mango-500 hover:border-transparent rounded" %>
+      <%= link_to "Cancel", venue_path(@venue), class: "transition ease-in-out duration-300 bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-base md:text-lg font-semibold hover:text-white py-1 px-3 my-4 mx-2 border border-saffron-mango-500 hover:border-transparent rounded" %>
+      <%= form.submit "Submit rating", class: "transition ease-in-out duration-300 bg-saffron-mango-300 hover:bg-saffron-mango-500 text-saffron-mango-700 text-base md:text-lg font-semibold hover:text-white py-1 px-3 my-4 mx-2 border border-saffron-mango-500 hover:border-transparent rounded" %>
     </div>
   </div>
 <% end %>

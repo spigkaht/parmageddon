@@ -1,29 +1,34 @@
-<div class="flex flex-col h-full justify-between text-saffron-mango-950">
-  <div class="flex flex-col md:flex-row justify-between md:justify-center items-center my-3">
-    <%= image_tag asset_url("PARMAGEDDON.png"), class: "w-2/3 max-w-xs sm:max-w-xs mx-3" %>
-    <h2 class="text-base lg:text-lg md:pt-20 mx-3">Find a Parma that's right for you.</h2>
+<div class="h-full lg:w-full lg:h-screen flex flex-col justify-between lg:flex lg:flex-row">
+  <div class="h-full lg:w-full flex flex-col justify-between lg:justify-center text-saffron-mango-950">
+    <div class="flex flex-col md:flex-row lg:flex-col justify-between md:justify-center items-center my-3 md:my-8 lg:mb-16">
+      <%= image_tag asset_url("PARMAGEDDON.png"), class: "w-2/3 lg:w-full max-w-xs sm:max-w-xs mx-3" %>
+      <h2 class="text-base md:text-xl lg:text-2xl md:pt-20 lg:pt-6 mx-3">Find a Parma that's right for you.</h2>
+    </div>
+    <div class="lg:hidden w-full h-full md:h-1/2 flex flex-col relative shadow-[0px_0px_10px_rgba(0,0,0,0.1)]" data-controller="google-maps" data-venue-details-target="mapDiv" data-google-maps-page-value="index">
+      <%= render "shared/map" %>
+    </div>
+    <div class="flex flex-col justify-between items-center py-2 mb-6 md:my-10 lg:my-16" data-controller="toggle-index-search">
+      <h2 class="font-bold sm:text-2xl">Find a venue to rate!</h2>
+      <%= form_with url: venues_path, method: :get do |form| %>
+        <div class="flex justify-center items-center my-1 sm:my-3">
+          <%= form.radio_button :select, "venue", checked: true, class: "w-4 h-4 sm:w-6 sm:h-6 text-saffron-mango-600 bg-saffron-mango-100 border-saffron-mango-400 focus:ring-saffron-mango-500 focus:ring-2 mx-2",
+            data: { action: "click->toggle-index-search#showVenue" } %>
+          <%= form.label :select_venue, "Venue", class: "mr-2 sm:text-xl" %>
+          <%= form.radio_button :select, "location", class: "w-4 h-4 sm:w-6 sm:h-6 text-saffron-mango-600 bg-saffron-mango-100 border-saffron-mango-400 focus:ring-saffron-mango-500 focus:ring-2 mx-2",
+            data: { action: "click->toggle-index-search#showLocation" } %>
+          <%= form.label :select_location, "Location", class: "sm:text-xl" %>
+        </div>
+        <div class="flex justify-center">
+          <%= form.text_field :venue, placeholder: "Enter venue name", class: "block w-60 md:w-80 px-2 py-1 text-sm sm:text-xl text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md",
+            data: { toggle_index_search_target: "venue" } %>
+          <%= form.text_field :location, placeholder: "Enter suburb or postcode, etc", class: "hidden w-60 md:w-80 px-2 py-1 text-sm sm:text-xl text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md",
+            data: { toggle_index_search_target: "location" } %>
+          <%= form.submit "GO", class: "transition ease-in-out duration-300 text-white bg-saffron-mango-600 hover:bg-saffron-mango-800 focus:ring-4 focus:ring-saffron-mango-300 font-medium rounded-lg text-xs sm:text-xl px-4 py-2 ml-2 focus:outline-none" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-  <div class="w-full h-full flex flex-col relative shadow-[0px_0px_10px_rgba(0,0,0,0.1)]" data-controller="google-maps" data-venue-details-target="mapDiv" data-google-maps-page-value="index">
+  <div class="hidden lg:flex w-full h-full lg:w-3/4 md:h-1/2 lg:h-full flex-col relative shadow-[0px_0px_10px_rgba(0,0,0,0.1)]" data-controller="google-maps" data-venue-details-target="mapDiv" data-google-maps-page-value="index">
     <%= render "shared/map" %>
-  </div>
-  <div class="flex flex-col justify-between items-center py-2 mb-6" data-controller="toggle-index-search">
-    <h2 class="font-bold">Find a venue to rate!</h2>
-    <%= form_with url: venues_path, method: :get do |form| %>
-      <div class="flex justify-center items-center my-1">
-        <%= form.radio_button :select, "venue", checked: true, class: "w-4 h-4 text-saffron-mango-600 bg-saffron-mango-100 border-saffron-mango-400 focus:ring-saffron-mango-500 focus:ring-2 mx-2",
-          data: { action: "click->toggle-index-search#showVenue" } %>
-        <%= form.label :select_venue, "Venue", class: "mr-2" %>
-        <%= form.radio_button :select, "location", class: "w-4 h-4 text-saffron-mango-600 bg-saffron-mango-100 border-saffron-mango-400 focus:ring-saffron-mango-500 focus:ring-2 mx-2",
-          data: { action: "click->toggle-index-search#showLocation" } %>
-        <%= form.label :select_location, "Location" %>
-      </div>
-      <div class="flex justify-center">
-        <%= form.text_field :venue, placeholder: "Enter venue name", class: "block w-60 px-2 py-1 text-sm text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md",
-          data: { toggle_index_search_target: "venue" } %>
-        <%= form.text_field :location, placeholder: "Enter suburb or postcode, etc", class: "hidden w-60 px-2 py-1 text-sm text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md",
-          data: { toggle_index_search_target: "location" } %>
-        <%= form.submit "GO", class: "transition ease-in-out duration-300 text-white bg-saffron-mango-600 hover:bg-saffron-mango-800 focus:ring-4 focus:ring-saffron-mango-300 font-medium rounded-lg text-xs px-4 py-2 ml-2 focus:outline-none" %>
-      </div>
-    <% end %>
   </div>
 </div>
