@@ -42,7 +42,11 @@
           <% if @venues.any? %>
             <% @venues.each do |venue| %>
               <tr class="odd:bg-white even:bg-saffron-mango-50 border-b">
-                <td scope="row" data-column="venue" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs"><%= link_to venue.name, venue_path(venue) %></td>
+                <td scope="row" data-column="venue" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs">
+                  <%= link_to venue_path(venue.slug, latitude: venue.latitude, longitude: venue.longitude) do %>
+                    <%= venue.name %>
+                  <% end %>
+                </td>
                 <td scope="row" data-column="location" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs"><%= venue.suburb %></td>
                 <td scope="row" data-column="price" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs text-right"><%= venue.price_average > 0 ? number_to_currency(venue.price_average) : "-" %></td>
                 <td scope="row" data-column="rating" class="px-3 py-2 lg:pr-12 font-medium text-saffron-mango-900 text-xs text-right"><%= venue.total_rating_average %></td>
