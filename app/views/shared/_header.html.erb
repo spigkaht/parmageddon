@@ -1,9 +1,12 @@
 <div data-controller="dropdown" class="relative flex justify-between w-full lg:h-screen lg:min-w-20 lg:max-w-20 shadow-[0_5px_5px_rgba(0,0,0,0.1)] py-1 md:py-2 lg:py-6 z-50">
   <div class="flex lg:flex-col justify-between lg:justify-start items-center w-full mx-2 lg:mx-4">
     <%= link_to root_path do %>
-      <div class="flex items-center lg:flex-col lg:justify-between">
+      <div class="flex items-center lg:flex-col lg:justify-between relative group">
         <%= image_tag "parma.png", class: "lg:block mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
-        <h2 class="lg:hidden text-base md:text-2xl font-semibold text-saffron-mango-900">PARMAGEDDON</h2>
+        <span class="absolute top-full left-1/4 lg:left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-saffron-mango-700 text-saffron-mango-50 text-sm rounded opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          Parma Home
+        </span>
+        <h1 class="lg:hidden text-base md:text-2xl font-semibold text-saffron-mango-900">PARMAGEDDON</h1>
       </div>
     <% end %>
     <div class="hidden lg:h-1/2 lg:flex lg:flex-col lg:justify-between lg:my-auto">
@@ -34,17 +37,17 @@
   <div data-dropdown-target="menu" class="hidden flex-col items-center absolute top-10 md:top-20 left-0 right-0 transition ease-in-out duration-500 bg-saffron-mango-20 border-y-2 border-saffron-mango-700 font-semibold text-xl md:text-2xl text-saffron-mango-950 py-2">
     <%= link_to root_path, class: "w-full" do %>
       <div class="transition ease-in-out duration-300 hover:bg-saffron-mango-500 h-full text-center hover:text-saffron-mango-200 py-2 md:py-4">
-        <p>Home</p>
+        <h1>Home</h1>
       </div>
     <% end %>
     <%= link_to venues_path, class: "w-full" do %>
       <div class="transition ease-in-out duration-300 hover:bg-saffron-mango-500 h-full text-center hover:text-saffron-mango-200 py-2 md:py-4">
-        <p>Venues</p>
+        <h1>Venues / Ratings</h1>
       </div>
     <% end %>
     <%= link_to contact_path, class: "w-full" do %>
       <div class="transition ease-in-out duration-300 hover:bg-saffron-mango-500 h-full text-center hover:text-saffron-mango-200 py-2 md:py-4">
-        <p>Contact</p>
+        <h1>Contact</h1>
       </div>
     <% end %>
   </div>

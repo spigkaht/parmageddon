@@ -4,7 +4,8 @@
   </div>
   <div data-fetch-nearby-venues-target="mainDiv">
     <div class="lg:w-full flex flex-col justify-between items-center py-2 mb-2 bg-saffron-mango-50" data-controller="toggle-index-search">
-      <h2 class="font-bold">Search by:</h2>
+      <h1 class="text-base md:text-2xl font-['Open_Sans'] font-semibold text-saffron-mango-900 mb-4">Venues + Ratings</h1>
+      <h2 class="font-bold text-saffron-mango-900">Search by:</h2>
       <div class="flex justify-center items-center my-1">
         <%= form_with url: venues_path, method: :get, local: true, data: { action: "submit->fetch-nearby-venues#search" } do |form| %>
           <div class="flex justify-center items-center my-1">
@@ -32,10 +33,10 @@
       <table class="w-full text-sm text-left text-saffron-mango-600" data-controller="table-sort">
         <thead class="text-xs text-saffron-mango-700 uppercase bg-saffron-mango-50">
           <tr>
-            <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="venue">Venue<span class="ml-2">&#8595;</span></th>
-            <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="location">Location<span class="ml-2">&#8595;</span></th>
-            <th scope="col" class="cursor-pointer text-xs text-right px-3 py-1.5" data-action="click->table-sort#sort" data-column="price">Price<span class="ml-2">&#8595;</span></th>
-            <th scope="col" class="cursor-pointer text-xs text-right px-3 py-1.5 lg:pr-12" data-action="click->table-sort#sort" data-column="rating">Rating<span class="ml-2">&#8595;</span></th>
+            <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="venue"><h4>Venue<span class="ml-2">&#8595;</span></h4></th>
+            <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="location"><h4>Location<span class="ml-2">&#8595;</span></h4></th>
+            <th scope="col" class="cursor-pointer text-xs text-right px-3 py-1.5" data-action="click->table-sort#sort" data-column="price"><h4>Price<span class="ml-2">&#8595;</span></h4></th>
+            <th scope="col" class="cursor-pointer text-xs text-right px-3 py-1.5 lg:pr-12" data-action="click->table-sort#sort" data-column="rating">Rating</h4><span class="ml-2">&#8595;</span></h4></th>
           </tr>
         </thead>
         <tbody data-table-sort-target="tableBody" data-fetch-nearby-venues-target="tableBody">
