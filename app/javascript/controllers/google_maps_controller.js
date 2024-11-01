@@ -16,7 +16,6 @@ export default class extends Controller {
     );
 
     if (!activeMapDiv) {
-      console.log("No visible map div found");
       return;
     }
 
@@ -34,7 +33,6 @@ export default class extends Controller {
   }
 
   initializeMap(mapDiv) {
-    console.log("initializing map");
     const urlParams = new URLSearchParams(window.location.search);
     this.initialLoadValue = urlParams.get("initialLoad") === "true";
     this.markerClickedValue = urlParams.get("markerClicked") === "true";
@@ -168,6 +166,9 @@ export default class extends Controller {
     this.currentInfoWindow = null;
     this.currentMarker = null;
 
+    const currentLat = this.latValue;
+    const currentLng = this.lngValue;
+
     this.mapDivTarget.addEventListener("click", (event) => {
       if (!event.target.closest(".marker-img") && !event.target.closest("#infoDiv")) {
         if (this.currentMarker) {
@@ -220,47 +221,57 @@ export default class extends Controller {
       });
 
       marker.addListener("click", () => {
-        this.map.setZoom(14);
-
-        const markerImg = marker.content.querySelector(".marker-img");
-        const infoDiv = marker.content.querySelector("#infoDiv");
-
-        if (this.currentMarker === marker) {
-          markerImg.style.width = "30px";
-          markerImg.style.height = "30px";
-          infoDiv.classList.add("hidden");
-          infoDiv.classList.remove("flex");
-          marker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
-          this.currentMarker = null;
-        } else {
-          this.markerClickedValue = true;
-
-          if (this.currentMarker) {
-            const previousMarkerImg = this.currentMarker.content.querySelector(".marker-img");
-            const previousInfoDiv = this.currentMarker.content.querySelector("#infoDiv");
-            previousMarkerImg.style.width = "30px";
-            previousMarkerImg.style.height = "30px";
-            previousInfoDiv.classList.add("hidden");
-            previousInfoDiv.classList.remove("flex");
-            this.currentMarker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
-          }
-
-          this.animateMapCenter(position);
-          markerImg.style.width = "50px";
-          markerImg.style.height = "50px";
-          infoDiv.classList.remove("hidden");
-          infoDiv.classList.add("flex");
-          marker.zIndex = google.maps.Marker.MAX_ZINDEX + 1;
-
-          this.currentMarker = marker;
-        }
+        this.handleMarkerClick(marker, position);
       });
+
+      // Automatically click the marker if it matches the current venue
+      if (parseFloat(venue.lat) === currentLat && parseFloat(venue.lng) === currentLng) {
+        this.handleMarkerClick(marker, position);
+      }
 
       this.bounds.extend(marker.position);
     });
 
     if (venues.length > 0) {
       this.map.fitBounds(this.bounds);
+    }
+  }
+
+  // Separate the marker click handling into its own function
+  handleMarkerClick(marker, position) {
+    this.map.setZoom(14);
+
+    const markerImg = marker.content.querySelector(".marker-img");
+    const infoDiv = marker.content.querySelector("#infoDiv");
+
+    if (this.currentMarker === marker) {
+      markerImg.style.width = "30px";
+      markerImg.style.height = "30px";
+      infoDiv.classList.add("hidden");
+      infoDiv.classList.remove("flex");
+      marker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
+      this.currentMarker = null;
+    } else {
+      this.markerClickedValue = true;
+
+      if (this.currentMarker) {
+        const previousMarkerImg = this.currentMarker.content.querySelector(".marker-img");
+        const previousInfoDiv = this.currentMarker.content.querySelector("#infoDiv");
+        previousMarkerImg.style.width = "30px";
+        previousMarkerImg.style.height = "30px";
+        previousInfoDiv.classList.add("hidden");
+        previousInfoDiv.classList.remove("flex");
+        this.currentMarker.zIndex = google.maps.Marker.MAX_ZINDEX - 1;
+      }
+
+      this.animateMapCenter(position);
+      markerImg.style.width = "50px";
+      markerImg.style.height = "50px";
+      infoDiv.classList.remove("hidden");
+      infoDiv.classList.add("flex");
+      marker.zIndex = google.maps.Marker.MAX_ZINDEX + 1;
+
+      this.currentMarker = marker;
     }
   }
 

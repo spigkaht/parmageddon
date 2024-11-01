@@ -1,9 +1,11 @@
 <div data-controller="dropdown" class="relative flex justify-between w-full lg:h-screen lg:min-w-20 lg:max-w-20 shadow-[0_5px_5px_rgba(0,0,0,0.1)] py-1 md:py-2 lg:py-6 z-50">
   <div class="flex lg:flex-col justify-between lg:justify-start items-center w-full mx-2 lg:mx-4">
-    <div class="flex items-center lg:flex-col lg:justify-between">
-      <%= image_tag "parma.png", class: "lg:block mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
-      <h2 class="lg:hidden text-base md:text-2xl font-semibold text-saffron-mango-900">PARMAGEDDON</h2>
-    </div>
+    <%= link_to root_path do %>
+      <div class="flex items-center lg:flex-col lg:justify-between">
+        <%= image_tag "parma.png", class: "lg:block mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
+        <h2 class="lg:hidden text-base md:text-2xl font-semibold text-saffron-mango-900">PARMAGEDDON</h2>
+      </div>
+    <% end %>
     <div class="hidden lg:h-1/2 lg:flex lg:flex-col lg:justify-between lg:my-auto">
       <%= link_to root_path, class: "relative group" do %>
         <%= image_tag "home-icon.svg", class: "mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
