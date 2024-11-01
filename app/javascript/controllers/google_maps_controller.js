@@ -11,49 +11,59 @@ export default class extends Controller {
   }
 
   connect() {
-    // Check if the map is already initialized or if the mapDiv is hidden
-    if (window.mapInitialized || this.isHidden(this.mapDivTarget)) {
+    const activeMapDiv = this.mapDivTargets.find(
+      (mapDiv) => mapDiv.offsetParent !== null
+    );
+
+    if (!activeMapDiv) {
+      console.log("No visible map div found");
       return;
     }
 
-    // Set the global flag to indicate the map is initialized
-    window.mapInitialized = true;
+    if ((this.isHidden(activeMapDiv)) && this.pageValue === "index") {
+      console.log("Map already initialized or is hidden");
+      return;
+    }
 
-    // Initialize map as usual
-    this.initializeMap();
+    window.mapInitialized = true;
+    this.initializeMap(activeMapDiv);
   }
 
   isHidden(element) {
     return element.offsetParent === null || window.getComputedStyle(element).visibility === "hidden";
   }
 
-  initializeMap() {
+  initializeMap(mapDiv) {
+    console.log("initializing map");
     const urlParams = new URLSearchParams(window.location.search);
     this.initialLoadValue = urlParams.get("initialLoad") === "true";
     this.markerClickedValue = urlParams.get("markerClicked") === "true";
 
     if ((this.initialLoadValue || this.markerClickedValue) && this.hasLatValue && this.hasLngValue) {
-      this.runAfterAsync(this.initMapOnce(this.latValue, this.lngValue), this.getVenues(this.latValue, this.lngValue));
+      this.runAfterAsync(
+        this.initMapOnce(this.latValue, this.lngValue, mapDiv),
+        this.getVenues(this.latValue, this.lngValue)
+      );
     } else {
-      this.checkForCoordinatesInParams();
+      this.checkForCoordinatesInParams(mapDiv);
     }
   }
 
-  initMapOnce(lat, lng) {
+  initMapOnce(lat, lng, mapDiv) {
     if (this.map) {
       console.log("Map is already initialized");
       return;
     }
-    this.initMap(lat, lng);
+    this.initMap(lat, lng, mapDiv);
   }
 
-  async initMap(lat, lng) {
+  async initMap(lat, lng, mapDiv) {
     if (typeof google === "undefined" || typeof google.maps === "undefined") {
       console.error("Google Maps API is not loaded yet.");
       return;
     }
 
-    if (!this.mapDivTarget || this.mapDivTarget.offsetHeight === 0) {
+    if (!mapDiv || mapDiv.offsetHeight === 0) {
       console.error("Map div is not ready or has no height.");
       return;
     }
@@ -69,7 +79,7 @@ export default class extends Controller {
       mapId: "8920b6736ae8305a",
     };
 
-    this.map = new Map(this.mapDivTarget, mapOptions);
+    this.map = new Map(mapDiv, mapOptions);
   }
 
   checkForCoordinatesInParams() {
