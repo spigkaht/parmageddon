@@ -1,25 +1,36 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["venueInput", "locationInput", "allInput", "tableBody", "noVenuesMessage", "spinner", "mainDiv"];
+  static targets = ["venueInput", "locationInput", "allInput", "tableBody", "spinner", "mainDiv"];
 
   static values = {
     apikey: String
   }
 
+  connect() {
+    const location = new URLSearchParams(window.location.search).get("location");
+    if (location) {
+      this.showSpinner();
+      this.getCoordinates(location);  // Trigger search if redirected with location
+    }
+  }
+
   search(event) {
-    console.log(this.venueInputTarget.checked);
-    if (this.venueInputTarget.value || this.allInputTarget.value) {
-      console.log("returning");
+    if (this.allInputTarget.checked) {
+      event.preventDefault();
+      const url = new URL(window.location.href);
+      url.searchParams.delete("location");
+      url.searchParams.delete("venue");
+      window.location.href = url.toString();
       return;
     }
 
-    event.preventDefault(); // Prevents the default form submission
-
-    const location = this.locationInputTarget.value.trim();
-    if (location) {
+    // If "location" input is used, prevent default form submission to handle it in JS
+    if (this.locationInputTarget.value.trim()) {
+      event.preventDefault();
       this.showSpinner();
-      this.getCoordinates(location);
+      this.getCoordinates(this.locationInputTarget.value.trim());
+      return;
     }
   }
 
@@ -91,7 +102,7 @@ export default class extends Controller {
           </td>
           <td scope="row" data-column="location" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs">${venue.suburb}</td>
           <td scope="row" data-column="price" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs text-right">${venue.price || "-"}</td>
-          <td scope="row" data-column="rating" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs text-right">${venue.rating}</td>
+          <td scope="row" data-column="rating" class="px-3 py-2 lg:pr-12 font-medium text-saffron-mango-900 text-xs text-right">${venue.rating}</td>
           `
         ;
         this.tableBodyTarget.appendChild(row);

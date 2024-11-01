@@ -14,7 +14,7 @@
             <%= form.radio_button :select, "location", class: "w-4 h-4 text-saffron-mango-600 bg-saffron-mango-100 border-saffron-mango-400 focus:ring-saffron-mango-500 focus:ring-2 mx-2",
               data: { action: "click->toggle-index-search#showLocation" } %>
             <%= form.label :select_location, "Location" %>
-            <%= form.radio_button :all, "all", class: "w-4 h-4 text-saffron-mango-600 bg-saffron-mango-100 border-saffron-mango-400 focus:ring-saffron-mango-500 focus:ring-2 mx-2",
+            <%= form.radio_button :select, "all", class: "w-4 h-4 text-saffron-mango-600 bg-saffron-mango-100 border-saffron-mango-400 focus:ring-saffron-mango-500 focus:ring-2 mx-2",
               data: { action: "click->toggle-index-search#showAll", fetch_nearby_venues_target: "allInput" } %>
             <%= form.label :select_all, "Show all" %>
           </div>
@@ -32,10 +32,10 @@
       <table class="w-full text-sm text-left text-saffron-mango-600" data-controller="table-sort">
         <thead class="text-xs text-saffron-mango-700 uppercase bg-saffron-mango-50">
           <tr>
-            <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="venue">Venue<span class="ml-2"></span></th>
-            <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="location">Location<span class="ml-2"></span></th>
-            <th scope="col" class="cursor-pointer text-xs text-right px-3 py-1.5" data-action="click->table-sort#sort" data-column="price">Price<span class="ml-2"></span></th>
-            <th scope="col" class="cursor-pointer text-xs text-right px-3 py-1.5 lg:pr-8" data-action="click->table-sort#sort" data-column="rating">Rating<span class="ml-2"></span></th>
+            <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="venue">Venue<span class="ml-2">&#8595;</span></th>
+            <th scope="col" class="cursor-pointer text-xs text-left px-3 py-1.5" data-action="click->table-sort#sort" data-column="location">Location<span class="ml-2">&#8595;</span></th>
+            <th scope="col" class="cursor-pointer text-xs text-right px-3 py-1.5" data-action="click->table-sort#sort" data-column="price">Price<span class="ml-2">&#8595;</span></th>
+            <th scope="col" class="cursor-pointer text-xs text-right px-3 py-1.5 lg:pr-12" data-action="click->table-sort#sort" data-column="rating">Rating<span class="ml-2">&#8595;</span></th>
           </tr>
         </thead>
         <tbody data-table-sort-target="tableBody" data-fetch-nearby-venues-target="tableBody">
@@ -45,7 +45,7 @@
                 <td scope="row" data-column="venue" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs"><%= link_to venue.name, venue_path(venue) %></td>
                 <td scope="row" data-column="location" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs"><%= venue.suburb %></td>
                 <td scope="row" data-column="price" class="px-3 py-2 font-medium text-saffron-mango-900 text-xs text-right"><%= venue.price_average > 0 ? number_to_currency(venue.price_average) : "-" %></td>
-                <td scope="row" data-column="rating" class="px-3 py-2 lg:pr-8 font-medium text-saffron-mango-900 text-xs text-right"><%= venue.total_rating_average %></td>
+                <td scope="row" data-column="rating" class="px-3 py-2 lg:pr-12 font-medium text-saffron-mango-900 text-xs text-right"><%= venue.total_rating_average %></td>
               </tr>
             <% end %>
           <% else%>

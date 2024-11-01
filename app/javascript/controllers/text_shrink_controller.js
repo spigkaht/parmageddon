@@ -22,14 +22,12 @@ export default class extends Controller {
       textElement.style.fontSize = "1.7rem";
     } else if (viewportWidth < 1280) {
       textElement.style.fontSize = "2rem";
-      console.log("text size === ", textElement.style.fontSize);
     } else if (viewportWidth < 1800) {
       return;
     } else {
       return;
     }
 
-    console.log("========== STILL GOING ===========");
     // Adjust font size down until text fits within the width
     while (textElement.scrollWidth > textElement.clientWidth) {
       let currentSize = parseFloat(window.getComputedStyle(textElement).fontSize);
