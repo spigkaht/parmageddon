@@ -335,16 +335,8 @@ export default class extends Controller {
     if (this.map && !document.body.contains(this.mapDivTarget)) {
       google.maps.event.clearInstanceListeners(this.map);
 
-      // Clear all markers
-      if (this.markers) {
-        this.markers.forEach(marker => marker.setMap(null));
-        this.markers = [];
-      }
-
-      this.map = null;
       this.initialLoadValue = false;
       this.markerClickedValue = false;
-      console.log("Map and markers cleared in disconnect()");
     }
   }
 }
