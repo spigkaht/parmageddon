@@ -49,6 +49,7 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "geocoder"
 gem "friendly_id", "~> 5.5.0"
 gem "meta-tags"
+gem "sitemap_generator"
 
 group :development, :test do
   gem "dotenv-rails"
