@@ -1,7 +1,9 @@
-User-agent: Googlebot
-Disallow: /nogooglebot/
-
+# Allow all bots to crawl everything
 User-agent: *
-Allow: /
+Disallow:
 
-Sitemap: http://www.parmageddon.net/sitemap.xml
+# Disallow crawling of development and test environments (if accessible)
+Disallow: /rails
+
+# Sitemap location
+Sitemap: https://www.parmageddon.net/sitemap.xml
