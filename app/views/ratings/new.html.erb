@@ -1,3 +1,10 @@
+<%
+  set_meta_tags(
+    title: "Rate #{@venue.name} | Rate a venue's Parma. Let us know what you think!",
+    description: "Ratings - scores out of five. Let us know how much the meal cost. Add comments if you'd like. Photo uploads coming soon.",
+    keywords: "Parma, Venue, Contact"
+  )
+%>
 <%= form_with model: @rating, url: venue_ratings_path(@venue), method: :post, data: { controller: "ratings", action: "submit->ratings#validate" } do |form| %>
   <div class="flex flex-col items-center text-saffron-mango-900 w-full">
     <div class="flex items-center py-4 sm:py-6 lg:py-8">

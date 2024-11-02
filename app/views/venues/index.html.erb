@@ -1,3 +1,10 @@
+<%
+  set_meta_tags(
+    title: "Venues | Venue list.. search all venues or search by venue name or location",
+    description: "List of all venues added to Parmageddon.net. Search by venue name or location. Sort results by any type.",
+    keywords: "Parma, Venue, Rate, Search"
+  )
+%>
 <div class="lg:w-full lg:flex lg:flex-col lg:box-border" data-controller="fetch-nearby-venues" data-fetch-nearby-venues-apikey-value=<%= ENV.fetch('GMAPS_GEO_API_KEY') %>>
   <div data-fetch-nearby-venues-target="spinner" style="display: none;" class="loader absolute inset-0 flex items-center justify-center z-50">
     <div class="w-12 h-12 border-4 border-t-4 border-t-blue-500 border-gray-300 rounded-full animate-spin"></div>

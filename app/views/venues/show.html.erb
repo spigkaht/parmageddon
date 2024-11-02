@@ -1,3 +1,10 @@
+<%
+  set_meta_tags(
+    title: "Venue | #{@venue.name}. View ratings, details, search for venues on our map. Submit a parma rating for this venue",
+    description: "View all details for this venue. Ratings, address, contact details & website. Search for a venue on our map. Submit a rating for this venue.",
+    keywords: "Parma, Venue, Rate, Search, Map"
+  )
+%>
 <div class="flex flex-col flex-grow w-full lg:w-11/12 h-full lg:h-screen" data-controller="venue-details">
   <turbo-frame id="venue-details" data-turbo-action="replace" data-turbo="false" class="flex flex-col lg:flex-row h-full">
     <div class="min-h-[70%] lg:h-full flex flex-col lg:w-full font-['Open_Sans'] text-saffron-mango-900 lg:mx-3" style="background-image: url(<%= image_path "parma-trans.png" %>);background-repeat:no-repeat;background-size:cover 80%;">
@@ -18,37 +25,37 @@
           <ul class="flex flex-col items-end text-xl md:text-3xl lg:mt-16">
             <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 pb-2 md:pb-4 lg:pb-4 [@media(max-height:700px)]:pb-1">
               <h3 class="font-bold">MEAT</h3>
-              <%= image_tag "google-star-24px.svg", class: "md:hidden ml-2 mr-5" %>
-              <%= image_tag "google-star-30px.svg", class: "hidden md:block lg:hidden ml-2 mr-5" %>
-              <%= image_tag "google-star-36px.svg", class: "hidden lg:block ml-2 mr-5" %>
+              <%= image_tag "google-star-24px.svg", alt: "Rating star", class: "md:hidden ml-2 mr-5" %>
+              <%= image_tag "google-star-30px.svg", alt: "Rating star", class: "hidden md:block lg:hidden ml-2 mr-5" %>
+              <%= image_tag "google-star-36px.svg", alt: "Rating star", class: "hidden lg:block ml-2 mr-5" %>
               <h3><%= @venue.chicken_rating_average %></h3>
             </li>
             <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5 md:py-2 lg:py-4 [@media(max-height:700px)]:py-1">
               <h3 class="font-bold">CRUMB</h3>
-              <%= image_tag "google-star-24px.svg", class: "md:hidden ml-2 mr-5" %>
-              <%= image_tag "google-star-30px.svg", class: "hidden md:block lg:hidden ml-2 mr-5" %>
-              <%= image_tag "google-star-36px.svg", class: "hidden lg:block ml-2 mr-5" %>
+              <%= image_tag "google-star-24px.svg", alt: "Rating star", class: "md:hidden ml-2 mr-5" %>
+              <%= image_tag "google-star-30px.svg", alt: "Rating star", class: "hidden md:block lg:hidden ml-2 mr-5" %>
+              <%= image_tag "google-star-36px.svg", alt: "Rating star", class: "hidden lg:block ml-2 mr-5" %>
               <h3><%= @venue.crumb_rating_average %></h3>
             </li>
             <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5 md:py-2 lg:py-4 [@media(max-height:700px)]:py-1">
               <h3 class="font-bold">TOPPING</h3>
-              <%= image_tag "google-star-24px.svg", class: "md:hidden ml-2 mr-5" %>
-              <%= image_tag "google-star-30px.svg", class: "hidden md:block lg:hidden ml-2 mr-5" %>
-              <%= image_tag "google-star-36px.svg", class: "hidden lg:block ml-2 mr-5" %>
+              <%= image_tag "google-star-24px.svg", alt: "Rating star", class: "md:hidden ml-2 mr-5" %>
+              <%= image_tag "google-star-30px.svg", alt: "Rating star", class: "hidden md:block lg:hidden ml-2 mr-5" %>
+              <%= image_tag "google-star-36px.svg", alt: "Rating star", class: "hidden lg:block ml-2 mr-5" %>
               <h3><%= @venue.topping_rating_average %></h3>
             </li>
             <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5 md:py-2 lg:py-4 [@media(max-height:700px)]:py-1">
               <h3 class="font-bold">SIDES</h3>
-              <%= image_tag "google-star-24px.svg", class: "md:hidden ml-2 mr-5" %>
-              <%= image_tag "google-star-30px.svg", class: "hidden md:block lg:hidden ml-2 mr-5" %>
-              <%= image_tag "google-star-36px.svg", class: "hidden lg:block ml-2 mr-5" %>
+              <%= image_tag "google-star-24px.svg", alt: "Rating star", class: "md:hidden ml-2 mr-5" %>
+              <%= image_tag "google-star-30px.svg", alt: "Rating star", class: "hidden md:block lg:hidden ml-2 mr-5" %>
+              <%= image_tag "google-star-36px.svg", alt: "Rating star", class: "hidden lg:block ml-2 mr-5" %>
               <h3><%= @venue.sides_rating_average %></h3>
             </li>
             <li class="flex justify-end items-center border-b border-saffron-mango-950 w-48 py-1.5 md:py-2 lg:py-4 [@media(max-height:700px)]:py-1">
               <h3 class="font-bold">VENUE</h3>
-              <%= image_tag "google-star-24px.svg", class: "md:hidden ml-2 mr-5" %>
-              <%= image_tag "google-star-30px.svg", class: "hidden md:block lg:hidden ml-2 mr-5" %>
-              <%= image_tag "google-star-36px.svg", class: "hidden lg:block ml-2 mr-5" %>
+              <%= image_tag "google-star-24px.svg", alt: "Rating star", class: "md:hidden ml-2 mr-5" %>
+              <%= image_tag "google-star-30px.svg", alt: "Rating star", class: "hidden md:block lg:hidden ml-2 mr-5" %>
+              <%= image_tag "google-star-36px.svg", alt: "Rating star", class: "hidden lg:block ml-2 mr-5" %>
               <h3><%= @venue.venue_rating_average %></h3>
             </li>
             <li class="flex justify-end items-center w-48 pt-2 md:pt-2 lg:pt-4 [@media(max-height:700px)]:pt-1">
@@ -79,9 +86,9 @@
             <div class="flex justify-between items-center">
               <p>
                 <h3 class="font-bold">TOTAL RATING</h3>
-                <%= image_tag "google-star-24px.svg", class: "md:hidden ml-2 mr-2" %>
-                <%= image_tag "google-star-30px.svg", class: "hidden md:block lg:hidden ml-2 mr-2" %>
-                <%= image_tag "google-star-36px.svg", class: "hidden lg:block ml-2 mr-2" %>
+                <%= image_tag "google-star-24px.svg", alt: "Rating star", class: "md:hidden ml-2 mr-2" %>
+                <%= image_tag "google-star-30px.svg", alt: "Rating star", class: "hidden md:block lg:hidden ml-2 mr-2" %>
+                <%= image_tag "google-star-36px.svg", alt: "Rating star", class: "hidden lg:block ml-2 mr-2" %>
                 <h3><%= @venue.total_rating_average %></h3>
               </p>
             </div>

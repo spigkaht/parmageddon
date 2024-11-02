@@ -1,7 +1,14 @@
+<%
+  set_meta_tags(
+    title: "Home | Find a parma that's right for you, rated by you",
+    description: "Find and rate venues in your local area for the dish Chicken Parmigiana. All ratings are entered by users - that means you!",
+    keywords: "Home, Parma, Venue, Rate"
+  )
+%>
 <div class="h-full lg:w-full lg:h-screen flex flex-col justify-between lg:flex lg:flex-row">
   <div class="h-full lg:w-full flex flex-col justify-between lg:justify-center text-saffron-mango-950">
     <div class="flex flex-col md:flex-row lg:flex-col justify-between md:justify-center items-center my-3 md:my-8 lg:mb-16">
-      <%= image_tag asset_url("PARMAGEDDON.png"), class: "w-2/3 lg:w-full max-w-xs sm:max-w-xs mx-3" %>
+      <%= image_tag asset_url("PARMAGEDDON.png"), alt: "Parmageddon Logo", class: "w-2/3 lg:w-full max-w-xs sm:max-w-xs mx-3" %>
       <h3 class="text-base md:text-xl lg:text-2xl md:pt-20 lg:pt-6 mx-3">Find a Parma that's right for you.</h3>
     </div>
     <div class="lg:hidden w-full h-full md:h-1/2 flex flex-col relative shadow-[0px_0px_10px_rgba(0,0,0,0.1)]" data-controller="google-maps" data-venue-details-target="mapDiv" data-google-maps-page-value="index">

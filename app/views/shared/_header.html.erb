@@ -2,7 +2,7 @@
   <div class="flex lg:flex-col justify-between lg:justify-start items-center w-full mx-2 lg:mx-4">
     <%= link_to root_path do %>
       <div class="flex items-center lg:flex-col lg:justify-between relative group">
-        <%= image_tag "parma.png", class: "lg:block mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
+        <%= image_tag "parma.png", alt: "Parmageddon logo small", class: "lg:block mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
         <span class="absolute top-full left-1/4 lg:left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-saffron-mango-700 text-saffron-mango-50 text-sm rounded opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           Parma Home
         </span>
@@ -11,43 +11,43 @@
     <% end %>
     <div class="hidden lg:h-1/2 lg:flex lg:flex-col lg:justify-between lg:my-auto">
       <%= link_to root_path, class: "relative group" do %>
-        <%= image_tag "home-icon.svg", class: "mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
+        <%= image_tag "home-icon.svg", alt: "Home icon", class: "mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
         <span class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-saffron-mango-700 text-saffron-mango-50 text-sm rounded opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           Home
         </span>
       <% end %>
       <%= link_to venues_path, class: "relative group" do %>
-        <%= image_tag "venues-icon.svg", class: "mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
+        <%= image_tag "venues-icon.svg", alt: "Venues icon", class: "mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
         <span class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-saffron-mango-700 text-saffron-mango-50 text-sm rounded opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           Venues
         </span>
       <% end %>
       <%= link_to contact_path, class: "relative group" do %>
-        <%= image_tag "contact-icon.svg", class: "mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
+        <%= image_tag "contact-icon.svg", alt: "Contact icon", class: "mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
         <span class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-saffron-mango-700 text-saffron-mango-50 text-sm rounded opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           Contact
         </span>
       <% end %>
     </div>
     <%= button_tag type: "button", class: "relative lg:hidden w-[40px] md:w-[60px] h-[40px] md:h-[60px] z-50 flex items-center justify-center", data: { action: "click->dropdown#toggleMenu" } do %>
-      <%= image_tag "menu-icon.svg", data: { "dropdown_target": "lines" }, class: "absolute w-[40px] md:w-[60px] h-[40px] md:h-[60px] transition-opacity transform duration-300 ease-in-out opacity-100" %>
-      <%= image_tag "menu-close.svg", data: { "dropdown_target": "cross" }, class: "absolute w-[40px] md:w-[60px] h-[40px] md:h-[60px] transition-opacity transform duration-300 ease-in-out opacity-0" %>
+      <%= image_tag "menu-icon.svg", alt: "Open menu icon", data: { "dropdown_target": "lines" }, class: "absolute w-[40px] md:w-[60px] h-[40px] md:h-[60px] transition-opacity transform duration-300 ease-in-out opacity-100" %>
+      <%= image_tag "menu-close.svg", alt: "Close menu icon", data: { "dropdown_target": "cross" }, class: "absolute w-[40px] md:w-[60px] h-[40px] md:h-[60px] transition-opacity transform duration-300 ease-in-out opacity-0" %>
     <% end %>
   </div>
   <div data-dropdown-target="menu" class="hidden flex-col items-center absolute top-10 md:top-20 left-0 right-0 transition ease-in-out duration-500 bg-saffron-mango-20 border-y-2 border-saffron-mango-700 font-semibold text-xl md:text-2xl text-saffron-mango-950 py-2">
     <%= link_to root_path, class: "w-full" do %>
       <div class="transition ease-in-out duration-300 hover:bg-saffron-mango-500 h-full text-center hover:text-saffron-mango-200 py-2 md:py-4">
-        <h1>Home</h1>
+        <h2>Home</h2>
       </div>
     <% end %>
     <%= link_to venues_path, class: "w-full" do %>
       <div class="transition ease-in-out duration-300 hover:bg-saffron-mango-500 h-full text-center hover:text-saffron-mango-200 py-2 md:py-4">
-        <h1>Venues / Ratings</h1>
+        <h2>Venues / Ratings</h2>
       </div>
     <% end %>
     <%= link_to contact_path, class: "w-full" do %>
       <div class="transition ease-in-out duration-300 hover:bg-saffron-mango-500 h-full text-center hover:text-saffron-mango-200 py-2 md:py-4">
-        <h1>Contact</h1>
+        <h2>Contact</h2>
       </div>
     <% end %>
   </div>
