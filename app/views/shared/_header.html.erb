@@ -9,7 +9,7 @@
         <h1 class="lg:hidden text-base md:text-2xl font-semibold text-saffron-mango-900">PARMAGEDDON</h1>
       </div>
     <% end %>
-    <div class="hidden lg:h-1/2 lg:flex lg:flex-col lg:justify-between lg:my-auto">
+    <div class="hidden lg:h-3/4 lg:flex lg:flex-col lg:justify-between lg:mt-auto lg:mb-6">
       <%= link_to root_path, class: "relative group" do %>
         <%= image_tag "home-icon.svg", alt: "Home icon", class: "mr-2 md:mr-4 lg:mr-0 w-[45px] md:w-[60px]" %>
         <span class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-saffron-mango-700 text-saffron-mango-50 text-sm rounded opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -28,6 +28,17 @@
           Contact
         </span>
       <% end %>
+      <div class="flex flex-col justify-between items-center">
+        <%= link_to "https://www.facebook.com/people/Parmageddon/61567884756926/" do %>
+          <%= image_tag "facebook-logo.png", size: "30x30" %>
+        <% end %>
+        <%= link_to "https://www.instagram.com/parmageddonnet/" do %>
+          <%= image_tag "instagram-logo.png", size: "30x30", class: "my-4" %>
+        <% end %>
+        <%= link_to "https://www.facebook.com/people/Parmageddon/61567884756926/" do %>
+          <%= image_tag "linkedin-logo.png", size: "30x30" %>
+        <% end %>
+      </div>
     </div>
     <%= button_tag type: "button", class: "relative lg:hidden w-[40px] md:w-[60px] h-[40px] md:h-[60px] z-50 flex items-center justify-center", data: { action: "click->dropdown#toggleMenu" } do %>
       <%= image_tag "menu-icon.svg", alt: "Open menu icon", data: { "dropdown_target": "lines" }, class: "absolute w-[40px] md:w-[60px] h-[40px] md:h-[60px] transition-opacity transform duration-300 ease-in-out opacity-100" %>
@@ -50,5 +61,16 @@
         <h2>Contact</h2>
       </div>
     <% end %>
+    <div class="flex justify-center items-center py-2 md:py-4 h-10 md:h-14">
+      <%= link_to "https://www.facebook.com/people/Parmageddon/61567884756926/" do %>
+        <%= image_tag "facebook-logo.png", size: "30x30", class: "hover:w-10 hover:h-10" %>
+      <% end %>
+      <%= link_to "https://www.instagram.com/parmageddonnet/" do %>
+        <%= image_tag "instagram-logo.png", size: "30x30", class: "hover:w-10 hover:h-10 mx-4 md:mx-6" %>
+      <% end %>
+      <%= link_to "https://www.facebook.com/people/Parmageddon/61567884756926/" do %>
+        <%= image_tag "linkedin-logo.png", size: "30x30", class: "hover:w-10 hover:h-10" %>
+      <% end %>
+    </div>
   </div>
 </div>

@@ -8,7 +8,7 @@
 <div class="h-full lg:w-full lg:h-screen flex flex-col justify-between lg:flex lg:flex-row">
   <div class="h-full lg:w-full flex flex-col justify-between lg:justify-center text-saffron-mango-950">
     <div class="flex flex-col md:flex-row lg:flex-col justify-between md:justify-center items-center my-3 md:my-8 lg:mb-16">
-      <%= image_tag asset_url("PARMAGEDDON.png"), alt: "Parmageddon Logo", class: "w-2/3 lg:w-full max-w-xs sm:max-w-xs mx-3" %>
+      <%= image_tag asset_url("PARMAGEDDON.png"), alt: "Parmageddon Logo", class: "w-2/3 h-full lg:w-full max-w-xs sm:max-w-xs mx-3" %>
       <h3 class="text-base md:text-xl lg:text-2xl md:pt-20 lg:pt-6 mx-3">Find a Parma that's right for you.</h3>
     </div>
     <div class="lg:hidden w-full h-full md:h-1/2 flex flex-col relative shadow-[0px_0px_10px_rgba(0,0,0,0.1)]" data-controller="google-maps" data-venue-details-target="mapDiv" data-google-maps-page-value="index">
@@ -25,12 +25,12 @@
             data: { action: "click->toggle-index-search#showLocation" } %>
           <%= form.label :select_location, "Location", class: "sm:text-xl" %>
         </div>
-        <div class="flex justify-center">
+        <div class="flex flex-col justify-center">
           <%= form.text_field :venue, placeholder: "Enter venue name", class: "block w-60 md:w-80 px-2 py-1 text-sm sm:text-xl text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md",
             data: { toggle_index_search_target: "venue" } %>
           <%= form.text_field :location, placeholder: "Enter suburb or postcode, etc", class: "hidden w-60 md:w-80 px-2 py-1 text-sm sm:text-xl text-center bg-saffron-mango-50 border-saffron-mango-300 focus:outline-none focus:ring-saffron-mango-600 focus:border-saffron-mango-800 rounded-md",
             data: { toggle_index_search_target: "location" } %>
-          <%= form.submit "Find me a parma", class: "transition ease-in-out duration-300 text-white bg-saffron-mango-600 hover:bg-saffron-mango-800 focus:ring-4 focus:ring-saffron-mango-300 font-medium rounded-lg text-xs sm:text-xl px-4 py-2 ml-2 focus:outline-none" %>
+          <%= form.submit "Find me a parma", class: "transition ease-in-out duration-300 text-white bg-saffron-mango-600 hover:bg-saffron-mango-800 focus:ring-4 focus:ring-saffron-mango-300 font-medium rounded-lg text-xs sm:text-xl px-4 py-2 mt-2 focus:outline-none" %>
         </div>
       <% end %>
     </div>
