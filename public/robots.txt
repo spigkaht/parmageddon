@@ -1,9 +1,6 @@
 # Allow all bots to crawl everything
 User-agent: *
-Disallow:
-
-# Disallow crawling of development and test environments (if accessible)
-Disallow: /rails
+Allow: /
 
 # Sitemap location
 Sitemap: https://www.parmageddon.net/sitemap.xml.gz
